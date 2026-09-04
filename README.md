@@ -1,7 +1,6 @@
 # Reminiscence
 
-![Game Title Screen Placeholder](Screenshots/title_screen.png)
-*(Catatan: Ganti link gambar di atas dengan screenshot asli game kamu nanti, atau hapus baris ini untuk sementara waktu).*
+![Game Title](https://i.ibb.co.com/cG0Kcyd/Game-Tittle-terbaru.png)
 
 **Reminiscence** is a 2D side-scrolling, story-based RPG developed in **Godot 4** using **C#** (Godot Mono/.NET).
 
