@@ -1,0 +1,298 @@
+[gd_scene format=3 uid="uid://wk6s3eec7rrm"]
+
+[ext_resource type="Script" uid="uid://dxuumguwiln1f" path="res://Scripts/ParallaxBackground.cs" id="1_65hh5"]
+[ext_resource type="Texture2D" uid="uid://bsje5cqxjjwej" path="res://Assets/Background/Background.png" id="2_65hh5"]
+[ext_resource type="Texture2D" uid="uid://dkal385nk1bsk" path="res://Assets/Cloud/cloud1.png" id="3_leunp"]
+[ext_resource type="Texture2D" uid="uid://chkrmwu6x66ja" path="res://Assets/Cloud/cloud4.png" id="4_h1v62"]
+[ext_resource type="Texture2D" uid="uid://djiucgvbk42j5" path="res://Assets/Cloud/cloud2.png" id="5_5hdia"]
+[ext_resource type="Texture2D" uid="uid://bumtcnhw2jcdq" path="res://Assets/Cloud/cloud3.png" id="6_iqn0u"]
+[ext_resource type="Texture2D" uid="uid://bx0wcn3586d44" path="res://Assets/MainMenu/RUMPUT DAN SUNGAI.png" id="7_3u44c"]
+[ext_resource type="Texture2D" uid="uid://duhdaarqcmsv5" path="res://Assets/MainMenu/AKAR POHON.png" id="8_bxv1r"]
+[ext_resource type="Texture2D" uid="uid://cbt00doea81h1" path="res://Assets/MainMenu/PEDANG_PIXEL-removebg-preview.png" id="9_rw3b1"]
+[ext_resource type="Texture2D" uid="uid://cgxm6bqvciasu" path="res://Assets/MainMenu/RUMPUT DEPAN.png" id="10_ke15f"]
+[ext_resource type="Texture2D" uid="uid://daayfmc5xnex5" path="res://Assets/MainMenu/PUDAR HITAM UNTUK UI.png" id="11_311ux"]
+[ext_resource type="Script" uid="uid://c4qbkcsl7m5ig" path="res://Scripts/UiLayer.cs" id="12_pnils"]
+[ext_resource type="Texture2D" uid="uid://fc3660w4umpa" path="res://Assets/MainMenu/Main Menu Game2.png" id="13_e4du8"]
+[ext_resource type="Texture2D" uid="uid://diqsf63kestos" path="res://Assets/Button/btn_new_game_hover.tres" id="14_o66vf"]
+[ext_resource type="Texture2D" uid="uid://5e0nvoulyss8" path="res://Assets/Button/btn_new_game.tres" id="15_fipmv"]
+[ext_resource type="Texture2D" uid="uid://c4kiix45pntt7" path="res://Assets/Button/btn_continue.tres" id="16_ydmd8"]
+[ext_resource type="Texture2D" uid="uid://bdb7rlot27dyw" path="res://Assets/Button/btn_continue_hover.tres" id="17_rplfc"]
+[ext_resource type="Texture2D" uid="uid://cmp3ni4hlsfbf" path="res://Assets/Button/btn_setting_hover.tres" id="18_f3d0c"]
+[ext_resource type="Texture2D" uid="uid://qrl5h5skc0dp" path="res://Assets/Button/btn_setting.tres" id="19_pbfag"]
+[ext_resource type="Texture2D" uid="uid://i2cyf4lg3ioh" path="res://Assets/Button/btn_diary_hover.tres" id="20_7xub0"]
+[ext_resource type="Texture2D" uid="uid://co5cy2jw3lti6" path="res://Assets/Button/btn_diary.tres" id="21_r4k1l"]
+[ext_resource type="AudioStream" uid="uid://y3s2hnteimnt" path="res://Assets/Sound/Main Menu Bgm.mp3" id="22_qwpoy"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4n7fu"]
+bg_color = Color(0.6, 0.6, 0.6, 0)
+
+[node name="MainMenu" type="Control" unique_id=1025106287]
+layout_mode = 3
+anchor_right = 0.88500005
+anchor_bottom = 0.55700004
+offset_right = -1019.5201
+offset_bottom = -360.93604
+
+[node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=971690276]
+script = ExtResource("1_65hh5")
+
+[node name="SkyLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1382846640]
+texture_filter = 1
+position = Vector2(0, -2)
+motion_scale = Vector2(0, 0)
+
+[node name="Sky" type="Sprite2D" parent="ParallaxBackground/SkyLayer" unique_id=1658897866]
+texture_filter = 1
+position = Vector2(576, 326)
+scale = Vector2(2.3999996, 2.3823528)
+texture = ExtResource("2_65hh5")
+
+[node name="Cloud" type="ParallaxLayer" parent="ParallaxBackground" unique_id=844873693]
+modulate = Color(1, 1, 1, 0.74509805)
+texture_filter = 1
+position = Vector2(-8, 315)
+motion_scale = Vector2(2, 2)
+motion_mirroring = Vector2(760, 0)
+
+[node name="Cloud1" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=57634337]
+texture_filter = 1
+position = Vector2(569, -232)
+scale = Vector2(6.4069767, 8.191233)
+texture = ExtResource("3_leunp")
+
+[node name="Cloud2" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=349014887]
+texture_filter = 1
+position = Vector2(873.00006, -182)
+scale = Vector2(4.8610215, 5.9232025)
+texture = ExtResource("4_h1v62")
+
+[node name="Cloud3" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=1359219511]
+texture_filter = 1
+position = Vector2(882, -6.9999914)
+scale = Vector2(5.7806015, 8.17638)
+texture = ExtResource("5_5hdia")
+
+[node name="Cloud4" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=1812167177]
+texture_filter = 1
+position = Vector2(535, -66)
+scale = Vector2(4.9326534, 6.560306)
+texture = ExtResource("6_iqn0u")
+
+[node name="CloudSlow_Op" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1806187697]
+visible = false
+texture_filter = 1
+position = Vector2(-318, 393)
+motion_mirroring = Vector2(800, 0)
+
+[node name="Cloud2" type="Sprite2D" parent="ParallaxBackground/CloudSlow_Op" unique_id=1642941174]
+texture_filter = 1
+position = Vector2(549, -392.00003)
+scale = Vector2(4.8610215, 5.9232025)
+texture = ExtResource("4_h1v62")
+
+[node name="Cloud3" type="Sprite2D" parent="ParallaxBackground/CloudSlow_Op" unique_id=1171368411]
+texture_filter = 1
+position = Vector2(658, 12.000008)
+scale = Vector2(5.7806015, 8.17638)
+texture = ExtResource("5_5hdia")
+
+[node name="Cloud4" type="Sprite2D" parent="ParallaxBackground/CloudSlow_Op" unique_id=2041137320]
+texture_filter = 1
+position = Vector2(1064.0001, 41)
+scale = Vector2(4.8610215, 5.9232025)
+texture = ExtResource("4_h1v62")
+
+[node name="Cloud5" type="Sprite2D" parent="ParallaxBackground/CloudSlow_Op" unique_id=758567025]
+texture_filter = 1
+position = Vector2(955, -347.99997)
+scale = Vector2(5.7806015, 8.17638)
+texture = ExtResource("5_5hdia")
+
+[node name="GroundLayer" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1420328668]
+texture_filter = 5
+motion_scale = Vector2(0, 0)
+
+[node name="Dataran" type="Sprite2D" parent="ParallaxBackground/GroundLayer" unique_id=972432016]
+texture_filter = 5
+position = Vector2(575, 347)
+scale = Vector2(1.7327329, 1.6053333)
+texture = ExtResource("7_3u44c")
+
+[node name="Pohon" type="Sprite2D" parent="ParallaxBackground/GroundLayer" unique_id=1133815269]
+texture_filter = 5
+position = Vector2(567, 358.4375)
+scale = Vector2(1.7042042, 1.9170002)
+texture = ExtResource("8_bxv1r")
+
+[node name="Pedang" type="Sprite2D" parent="ParallaxBackground/GroundLayer" unique_id=756811753]
+texture_filter = 5
+position = Vector2(839.99994, 345.00003)
+rotation = 0.2532336
+scale = Vector2(0.6813001, 0.90419847)
+texture = ExtResource("9_rw3b1")
+
+[node name="Rumput" type="Sprite2D" parent="ParallaxBackground/GroundLayer" unique_id=6805477]
+texture_filter = 5
+position = Vector2(576.25006, 367.87503)
+scale = Vector2(1.728979, 1.482)
+texture = ExtResource("10_ke15f")
+
+[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground" unique_id=159851818]
+modulate = Color(1, 1, 1, 0.7176471)
+texture_filter = 1
+position = Vector2(281.875, 323.37497)
+scale = Vector2(1.3746945, 1.0626022)
+texture = ExtResource("11_311ux")
+flip_h = true
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1431544186]
+script = ExtResource("12_pnils")
+
+[node name="MenuUI" type="Control" parent="UILayer" unique_id=167479855]
+layout_mode = 3
+anchor_left = -0.003
+anchor_bottom = 0.53900003
+offset_left = 35.456
+offset_top = 27.0
+offset_right = 75.0
+offset_bottom = -284.27203
+
+[node name="TitleLabel" type="Sprite2D" parent="UILayer/MenuUI" unique_id=354652367]
+texture_filter = 1
+position = Vector2(212.99998, 73.5)
+scale = Vector2(2.209239, 2.763158)
+texture = ExtResource("13_e4du8")
+region_enabled = true
+region_rect = Rect2(44, 20, 184, 38)
+
+[node name="MenuBos" type="VBoxContainer" parent="UILayer/MenuUI" unique_id=1809603437]
+custom_minimum_size = Vector2(120, 100)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 4.5
+offset_top = 154.0
+offset_right = 228.5
+offset_bottom = 446.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="NewGame" type="TextureButton" parent="UILayer/MenuUI/MenuBos" unique_id=856554753]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+action_mode = 0
+texture_normal = ExtResource("15_fipmv")
+texture_hover = ExtResource("14_o66vf")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Continue" type="TextureButton" parent="UILayer/MenuUI/MenuBos" unique_id=1067896248]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+texture_normal = ExtResource("16_ydmd8")
+texture_hover = ExtResource("17_rplfc")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Setting" type="TextureButton" parent="UILayer/MenuUI/MenuBos" unique_id=195579603]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+texture_normal = ExtResource("19_pbfag")
+texture_hover = ExtResource("18_f3d0c")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="Diary" type="TextureButton" parent="UILayer/MenuUI/MenuBos" unique_id=610467392]
+texture_filter = 1
+custom_minimum_size = Vector2(120, 70)
+layout_mode = 2
+texture_normal = ExtResource("21_r4k1l")
+texture_hover = ExtResource("20_7xub0")
+ignore_texture_size = true
+stretch_mode = 5
+
+[node name="DiaryPopup" type="Panel" parent="UILayer" unique_id=55320254]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4n7fu")
+
+[node name="Panel" type="Panel" parent="UILayer/DiaryPopup" unique_id=1014453852]
+layout_mode = 0
+offset_left = 316.0
+offset_top = 115.0
+offset_right = 885.0
+offset_bottom = 513.0
+
+[node name="CloseButton" type="Button" parent="UILayer/DiaryPopup/Panel" unique_id=593240222]
+layout_mode = 0
+offset_left = 539.0
+offset_top = 12.0
+offset_right = 557.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(0.8745098, 0, 0, 1)
+text = "X
+"
+
+[node name="Label" type="Label" parent="UILayer/DiaryPopup/Panel" unique_id=1102343542]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 82.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 20
+text = "Diary"
+
+[node name="SettingsPopup" type="Panel" parent="UILayer" unique_id=1884559511]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_4n7fu")
+
+[node name="Panel" type="Panel" parent="UILayer/SettingsPopup" unique_id=216255434]
+layout_mode = 0
+offset_left = 316.0
+offset_top = 115.0
+offset_right = 885.0
+offset_bottom = 513.0
+
+[node name="CloseButton" type="Button" parent="UILayer/SettingsPopup/Panel" unique_id=1110913659]
+layout_mode = 0
+offset_left = 539.0
+offset_top = 12.0
+offset_right = 557.0
+offset_bottom = 43.0
+theme_override_colors/font_color = Color(0.8745098, 0, 0, 1)
+text = "X
+"
+
+[node name="Label" type="Label" parent="UILayer/SettingsPopup/Panel" unique_id=1099531152]
+layout_mode = 0
+offset_left = 14.0
+offset_top = 12.0
+offset_right = 82.0
+offset_bottom = 40.0
+theme_override_font_sizes/font_size = 20
+text = "Setting"
+
+[node name="BackgroundMusic" type="AudioStreamPlayer2D" parent="." unique_id=1406442492]
+stream = ExtResource("22_qwpoy")
+volume_db = -15.0
+autoplay = true
+
+[connection signal="pressed" from="UILayer/MenuUI/MenuBos/Setting" to="UILayer" method="_on_setting_pressed"]
+[connection signal="pressed" from="UILayer/MenuUI/MenuBos/Diary" to="UILayer" method="_on_diary_pressed"]
+[connection signal="pressed" from="UILayer/DiaryPopup/Panel/CloseButton" to="UILayer" method="_on_close_button_pressed"]
+[connection signal="pressed" from="UILayer/SettingsPopup/Panel/CloseButton" to="UILayer" method="_on_close_button_pressed"]
