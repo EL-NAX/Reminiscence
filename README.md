@@ -1,8 +1,6 @@
-<<<<<<< HEAD
 # Reminiscence
 
-![Game Title Screen Placeholder](Screenshots/title_screen.png)
-*(Catatan: Ganti link gambar di atas dengan screenshot asli game kamu nanti, atau hapus baris ini untuk sementara waktu).*
+![Game Title](https://i.ibb.co.com/cG0Kcyd/Game-Tittle-terbaru.png)
 
 **Reminiscence** is a 2D side-scrolling, story-based RPG developed in **Godot 4** using **C#** (Godot Mono/.NET).
 
@@ -58,7 +56,6 @@ In a world ruled by the absolute laws of the Creator, every intent of evil is pu
 - Use **Git LFS** for all images and audio files.
 
 ## 📜 License
-*(Isi sesuai hak cipta. Contoh:)*
 **All rights reserved.** This project is a personal collaboration project and is not yet open for public commercial use.
 =======
 # Reminiscence — Godot 4 C# Starter Architecture
@@ -229,4 +226,3 @@ This is a gameplay foundation, not a finished commercial game. You still need to
 - testing
 
 Some advanced mechanics are intentionally exposed as hooks so you can connect them to your own animations and assets.
->>>>>>> 0d0e077 (Initial commit: Reminiscence Project)
