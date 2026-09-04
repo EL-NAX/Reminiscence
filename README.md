@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Reminiscence
 
 ![Game Title Screen Placeholder](Screenshots/title_screen.png)
