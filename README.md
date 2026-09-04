@@ -56,7 +56,6 @@ In a world ruled by the absolute laws of the Creator, every intent of evil is pu
 - Use **Git LFS** for all images and audio files.
 
 ## 📜 License
-*(Isi sesuai hak cipta. Contoh:)*
 **All rights reserved.** This project is a personal collaboration project and is not yet open for public commercial use.
 =======
 # Reminiscence — Godot 4 C# Starter Architecture
