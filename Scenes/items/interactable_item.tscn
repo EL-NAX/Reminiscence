@@ -1,0 +1,38 @@
+[gd_scene format=3 uid="uid://bcsthr5yqpqut"]
+
+[ext_resource type="Script" uid="uid://bi845pmy428h4" path="res://Scripts/InteractableItem.cs" id="1_b4ekl"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ihpd"]
+size = Vector2(40, 40)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_2ihpd"]
+radius = 70.0
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_b4ekl"]
+load_path = "res://.godot/imported/PEDANG KAYU.png-8005d267895ca19635f8c5bec0e39a3d.ctex"
+
+[node name="InteractableItem" type="Area2D" unique_id=1708812332]
+script = ExtResource("1_b4ekl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1295705230]
+shape = SubResource("RectangleShape2D_2ihpd")
+
+[node name="InteractionArea" type="Area2D" parent="." unique_id=888522791]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="InteractionArea" unique_id=1498920101]
+shape = SubResource("CircleShape2D_2ihpd")
+
+[node name="Label" type="Label" parent="." unique_id=215502087]
+offset_left = -56.0
+offset_top = -52.0
+offset_right = 56.0
+offset_bottom = -25.0
+theme_override_constants/outline_size = 1
+theme_override_font_sizes/font_size = 8
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=215294340]
+position = Vector2(-1.1920929e-07, 1.2516975e-06)
+scale = Vector2(0.011547343, 0.011547344)
+texture = SubResource("CompressedTexture2D_b4ekl")

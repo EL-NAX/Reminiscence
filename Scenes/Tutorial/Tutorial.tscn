@@ -6,6 +6,7 @@
 [ext_resource type="Texture2D" uid="uid://c1p1mqujtsav0" path="res://Assets/Pohon/POHON BESAR.png" id="3_uo1fs"]
 [ext_resource type="Texture2D" uid="uid://cqoylg122gyxy" path="res://Assets/Tile/Floor Tiles2.png" id="3_x7a1n"]
 [ext_resource type="Texture2D" uid="uid://bk6cffw5iosru" path="res://Assets/Tile/Decor.png" id="4_3j26a"]
+[ext_resource type="PackedScene" uid="uid://bcsthr5yqpqut" path="res://Scenes/items/interactable_item.tscn" id="8_tq6py"]
 [ext_resource type="PackedScene" uid="uid://de4choyavvlm3" path="res://Scenes/player/player.tscn" id="13_sgy12"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_2o727"]
@@ -2020,3 +2021,6 @@ texture = ExtResource("3_uo1fs")
 position = Vector2(2, -275)
 scale = Vector2(1.5126752, 1.4142951)
 polygon = PackedVector2Array(-0.6610805, -2.8282623, 134.19934, 313.23026, 96.51775, 333.0281, 50.903194, 333.73517, 43.63131, 349.99768, 44.29239, 390.30048, 52.886436, 426.36084, 66.10805, 447.5728, 79.32966, 456.76465, 111.06152, 458.17877, 163.28688, 486.46143, 85.27938, 521.10767, -47.597797, 523.2289, -152.04851, 494.94623, -99.16207, 457.47174, -44.953476, 439.088, -33.054024, 389.59338, -37.681587, 336.56345, -118.994484, 312.5232)
+
+[node name="InteractableItem" parent="." unique_id=1708812332 instance=ExtResource("8_tq6py")]
+position = Vector2(738, 380)
