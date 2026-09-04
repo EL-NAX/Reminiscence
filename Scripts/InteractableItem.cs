@@ -8,11 +8,9 @@ public partial class InteractableItem : Area2D
 	public override void _Ready()
 	{
 		Area2D interactionArea = GetNode<Area2D>("InteractionArea");
-
 		interactionArea.BodyEntered += OnPlayerEntered;
 		interactionArea.BodyExited += OnPlayerExited;
 		
-		// Ambil label - nama node harus "Label"
 		interactionLabel = GetNode<Label>("Label");
 		if (interactionLabel != null)
 		{
@@ -25,13 +23,12 @@ public partial class InteractableItem : Area2D
 		if (body is Player)
 		{
 			playerInRange = true;
-			GD.Print("Tekan E untuk berinteraksi");
+			GD.Print("Tekan F untuk berinteraksi");
 			
-			// Tampilkan label
 			if (interactionLabel != null)
 			{
 				interactionLabel.Visible = true;
-				interactionLabel.Text = "Tekan E untuk berinteraksi";
+				interactionLabel.Text = "Tekan F untuk berinteraksi";
 			}
 		}
 	}
@@ -43,7 +40,6 @@ public partial class InteractableItem : Area2D
 			playerInRange = false;
 			GD.Print("Player keluar dari area item");
 			
-			// Sembunyikan label
 			if (interactionLabel != null)
 			{
 				interactionLabel.Visible = false;
@@ -53,7 +49,8 @@ public partial class InteractableItem : Area2D
 
 	public override void _Process(double delta)
 	{
-		if (playerInRange && Input.IsKeyPressed(Key.E))
+		// Menggunakan Input Map dengan action "interact"
+		if (playerInRange && Input.IsActionJustPressed("interact"))
 		{
 			Interact();
 		}
