@@ -50,7 +50,6 @@ In a world ruled by the absolute laws of the Creator, every intent of evil is pu
 - [ ] Boss Fights
 
 ## 🤝 Contributing
-*(Kamu bisa isi ini kalau tim kamu sudah mulai menambah fitur, atau isi aturan main:)*
 - Pull the latest code from `main` before starting your work.
 - Do not commit the `.godot` folder or `bin/obj` folders.
 - Use **Git LFS** for all images and audio files.
