@@ -1972,6 +1972,9 @@ position = Vector2(576, 324)
 scale = Vector2(1.125, 1.1250001)
 texture = ExtResource("1_2o727")
 
+[node name="Player" parent="." unique_id=387767804 instance=ExtResource("13_sgy12")]
+position = Vector2(558, 368)
+
 [node name="Tile" type="TileMap" parent="." unique_id=1806167310]
 tile_set = SubResource("TileSet_65hh5")
 format = 2
@@ -1984,9 +1987,6 @@ y_sort_enabled = true
 tile_set = SubResource("TileSet_rlm2d")
 format = 2
 layer_0/tile_data = PackedInt32Array(1507334, 0, 17, 1507337, 0, 17, 1507338, 0, 17, 1507339, 0, 17, 1441799, 0, 17, 1376261, 0, 17, 1507342, 1179648, 9, 1507340, 1179648, 9)
-
-[node name="Player" parent="." unique_id=387767804 instance=ExtResource("13_sgy12")]
-position = Vector2(558, 368)
 
 [node name="Border_Vertikal" type="StaticBody2D" parent="." unique_id=1189079651]
 

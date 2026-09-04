@@ -2,7 +2,6 @@ using Godot;
 
 public partial class Player : CharacterBody2D
 {
-	// NODE REFERENCES
 	private AnimatedSprite2D _animatedSprite;
 
 	// MOVEMENT
@@ -19,11 +18,13 @@ public partial class Player : CharacterBody2D
 	private float dashCooldownTimer = 0.0f;
 	private bool isDashing = false;
 
-	// Arah terakhir Player bergerak
 	private float facingDirection = 1.0f;
 
 	// ATTACK
 	private bool isAttacking = false;
+	private float attackCooldown = 0.0f;
+	[Export] public float AttackDuration = 0.3f;
+	[Export] public float AttackCooldownDuration = 0.6f;
 
 	// JUMP BUFFER & COYOTE TIME
 	private float jumpBufferTimer = 0.0f;
@@ -33,8 +34,6 @@ public partial class Player : CharacterBody2D
 	public override void _Ready()
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-
-		// PENGATURAN ANTI LICIN
 		FloorStopOnSlope = true;
 		FloorMaxAngle = Mathf.DegToRad(45);
 		FloorSnapLength = 2.0f;
@@ -45,6 +44,7 @@ public partial class Player : CharacterBody2D
 		float dt = (float)delta;
 
 		if (dashCooldownTimer > 0) dashCooldownTimer -= dt;
+		if (attackCooldown > 0) attackCooldown -= dt;
 		if (jumpBufferTimer > 0) jumpBufferTimer -= dt;
 		if (coyoteTimer > 0) coyoteTimer -= dt;
 
@@ -54,7 +54,6 @@ public partial class Player : CharacterBody2D
 			Velocity = new Vector2(facingDirection * DashSpeed, 0);
 			MoveAndSlide();
 			UpdateAnimations(facingDirection);
-
 			if (dashTimer <= 0) isDashing = false;
 			return;
 		}
@@ -74,21 +73,17 @@ public partial class Player : CharacterBody2D
 
 		Velocity = new Vector2(direction * Speed, Velocity.Y);
 
+		// Jump Logic
 		if (Input.IsActionJustPressed("jump"))
 		{
 			jumpBufferTimer = 0.1f;
 			isJumpHeld = true;
 		}
-
 		if (Input.IsActionJustReleased("jump"))
 		{
 			isJumpHeld = false;
-			if (Velocity.Y < 0)
-			{
-				Velocity = new Vector2(Velocity.X, Velocity.Y * 0.5f);
-			}
+			if (Velocity.Y < 0) Velocity = new Vector2(Velocity.X, Velocity.Y * 0.5f);
 		}
-
 		if (jumpBufferTimer > 0 && (IsOnFloor() || coyoteTimer > 0))
 		{
 			Velocity = new Vector2(Velocity.X, -JumpForce);
@@ -96,16 +91,15 @@ public partial class Player : CharacterBody2D
 			coyoteTimer = 0;
 		}
 
-		// HANYA BISA DASH SAAT DI TANAH
+		// Dash Logic (Hanya di tanah)
 		if (Input.IsActionJustPressed("dash") && dashCooldownTimer <= 0)
 		{
-			if (IsOnFloor()) 
-			{
-				StartDash();
-			}
+			if (IsOnFloor()) StartDash();
 		}
 
-		if (Input.IsActionJustPressed("attack") && !isAttacking)
+		// ===== ATTACK LOGIC (Hanya bisa saat DIAM / IDLE) =====
+		// direction == 0 artinya tidak menekan A atau D
+		if (Input.IsActionJustPressed("attack") && !isAttacking && attackCooldown <= 0 && direction == 0)
 		{
 			Attack();
 		}
@@ -119,9 +113,10 @@ public partial class Player : CharacterBody2D
 		if (facingDirection > 0) _animatedSprite.FlipH = false;
 		else if (facingDirection < 0) _animatedSprite.FlipH = true;
 
+		// PRIORITAS: Dash -> Attack -> Jump -> Walk -> Idle
 		if (isDashing)
 		{
-			_animatedSprite.Play("walk");
+			_animatedSprite.Play("walk"); // Ganti ke animasi dash kalau ada
 		}
 		else if (isAttacking)
 		{
@@ -151,11 +146,10 @@ public partial class Player : CharacterBody2D
 	private void Attack()
 	{
 		isAttacking = true;
-		GetTree().CreateTimer(0.2).Timeout += FinishAttack;
-	}
-
-	private void FinishAttack()
-	{
-		isAttacking = false;
+		attackCooldown = AttackCooldownDuration;
+		GetTree().CreateTimer(AttackDuration).Timeout += () =>
+		{
+			isAttacking = false;
+		};
 	}
 }
