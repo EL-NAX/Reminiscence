@@ -4,6 +4,10 @@ public partial class interactableitem : Area2D
 {
 	private bool playerInRange = false;
 	private Label interactionLabel;
+	
+	// ===== TAMBAHAN: Referensi ke Player =====
+	private player currentPlayer = null;
+	// ===== END TAMBAHAN =====
 
 	public override void _Ready()
 	{
@@ -23,6 +27,11 @@ public partial class interactableitem : Area2D
 		if (body is player)
 		{
 			playerInRange = true;
+			
+			// ===== TAMBAHAN: Simpan referensi player =====
+			currentPlayer = body as player;
+			// ===== END TAMBAHAN =====
+			
 			GD.Print("Tekan F untuk berinteraksi");
 			
 			if (interactionLabel != null)
@@ -38,6 +47,11 @@ public partial class interactableitem : Area2D
 		if (body is player)
 		{
 			playerInRange = false;
+			
+			// ===== TAMBAHAN: Hapus referensi player =====
+			currentPlayer = null;
+			// ===== END TAMBAHAN =====
+			
 			GD.Print("Player keluar dari area item");
 			
 			if (interactionLabel != null)
@@ -56,9 +70,30 @@ public partial class interactableitem : Area2D
 		}
 	}
 
-	private void Interact()
+	// ===== DIUBAH: dari `private void Interact()` menjadi `private async void Interact()` =====
+	private async void Interact()
 	{
 		GD.Print("ITEM DIINTERAKSI!");
+		
+		// Sembunyikan label dulu
+		if (interactionLabel != null)
+		{
+			interactionLabel.Visible = false;
+		}
+		
+		// Cegah spam interact
+		playerInRange = false;
+		
+		// Panggil animasi interact di player
+		if (currentPlayer != null)
+		{
+			currentPlayer.PlayInteractAnimation();
+			
+			// Tunggu animasi selesai (sesuaikan dengan InteractDuration di player)
+			await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+		}
+		
 		QueueFree();
 	}
+	// ===== END DIUBAH =====
 }

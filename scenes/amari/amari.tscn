@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://cedbwmvmplhuo"]
 
 [ext_resource type="Script" uid="uid://b3np6glob8khm" path="res://scripts/amari_ai.cs" id="1_r781i"]
-[ext_resource type="Texture2D" uid="uid://b80aoiyywohql" path="res://assets/Amari/idle.png" id="2_hcyhi"]
-[ext_resource type="Texture2D" uid="uid://bxmywmxkfu8jm" path="res://assets/Amari/running.png" id="3_t17te"]
+[ext_resource type="Texture2D" uid="uid://b80aoiyywohql" path="res://assets/amari/idle.png" id="2_hcyhi"]
+[ext_resource type="Texture2D" uid="uid://bxmywmxkfu8jm" path="res://assets/amari/running.png" id="3_t17te"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_w5at3"]
 atlas = ExtResource("2_hcyhi")
@@ -87,8 +87,9 @@ animations = [{
 "speed": 10.0
 }]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ihpd"]
-size = Vector2(27, 67)
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tfctf"]
+radius = 12.0
+height = 56.0
 
 [node name="Amari" type="CharacterBody2D" unique_id=1373686669]
 collision_layer = 3
@@ -102,5 +103,5 @@ frame = 2
 frame_progress = 0.10580622
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=141885889]
-position = Vector2(-4.5, 5.5)
-shape = SubResource("RectangleShape2D_2ihpd")
+position = Vector2(-3, 10)
+shape = SubResource("CapsuleShape2D_tfctf")

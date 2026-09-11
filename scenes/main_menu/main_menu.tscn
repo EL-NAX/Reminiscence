@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://wk6s3eec7rrm"]
 
-[ext_resource type="Script" uid="uid://dxuumguwiln1f" path="res://scripts/parallax_background.cs" id="1_65hh5"]
+[ext_resource type="Script" uid="uid://b5figijt4mw7d" path="res://scripts/parallax_background.cs" id="1_65hh5"]
 [ext_resource type="Texture2D" uid="uid://bvjibbmvflh7" path="res://assets/background/background.png" id="2_65hh5"]
 [ext_resource type="Texture2D" uid="uid://b5g263b72locw" path="res://assets/cloud/cloud1.png" id="3_leunp"]
 [ext_resource type="Texture2D" uid="uid://b4mvytrq2p0dv" path="res://assets/cloud/cloud4.png" id="4_h1v62"]
@@ -11,7 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://dbiwdx2hsyufy" path="res://assets/main_menu/ice_sword.png" id="9_n7xlh"]
 [ext_resource type="Texture2D" uid="uid://cqu78ft565naq" path="res://assets/main_menu/grass.png" id="10_0xlsr"]
 [ext_resource type="Texture2D" uid="uid://crifnwgfyy7hk" path="res://assets/main_menu/black_fade.png" id="11_0oicw"]
-[ext_resource type="Script" uid="uid://c4qbkcsl7m5ig" path="res://scripts/ui_layer.cs" id="12_pnils"]
+[ext_resource type="Script" uid="uid://to6s0uupwssr" path="res://scripts/ui_layer.cs" id="12_pnils"]
 [ext_resource type="Texture2D" uid="uid://bupsndvxsvxly" path="res://assets/main_menu/button_1.png" id="13_83tid"]
 [ext_resource type="Texture2D" uid="uid://diqsf63kestos" path="res://assets/button/btn_new_game_hover.tres" id="14_o66vf"]
 [ext_resource type="Texture2D" uid="uid://5e0nvoulyss8" path="res://assets/button/btn_new_game.tres" id="15_fipmv"]

@@ -31,6 +31,11 @@ public partial class player : CharacterBody2D
 	private float coyoteTimer = 0.0f;
 	private bool isJumpHeld = false;
 
+	// ===== TAMBAHAN: INTERACT =====
+	private bool isInteracting = false;
+	[Export] public float InteractDuration = 0.5f;
+	// ===== END TAMBAHAN =====
+
 	public override void _Ready()
 	{
 		_animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
@@ -47,6 +52,20 @@ public partial class player : CharacterBody2D
 		if (attackCooldown > 0) attackCooldown -= dt;
 		if (jumpBufferTimer > 0) jumpBufferTimer -= dt;
 		if (coyoteTimer > 0) coyoteTimer -= dt;
+
+		// ===== TAMBAHAN: Cegah movement saat interact =====
+		if (isInteracting)
+		{
+			Velocity = new Vector2(0, Velocity.Y);
+			if (!IsOnFloor())
+			{
+				Velocity = new Vector2(Velocity.X, Velocity.Y + Gravity * dt);
+			}
+			MoveAndSlide();
+			UpdateAnimations(0);
+			return;
+		}
+		// ===== END TAMBAHAN =====
 
 		if (isDashing)
 		{
@@ -113,8 +132,14 @@ public partial class player : CharacterBody2D
 		if (facingDirection > 0) _animatedSprite.FlipH = false;
 		else if (facingDirection < 0) _animatedSprite.FlipH = true;
 
-		// PRIORITAS: Dash -> Attack -> Jump -> Walk -> Idle
-		if (isDashing)
+		// PRIORITAS: Interact -> Dash -> Attack -> Jump -> Walk -> Idle
+		// ===== TAMBAHAN: Cek interact paling atas =====
+		if (isInteracting)
+		{
+			_animatedSprite.Play("interact");
+		}
+		// ===== END TAMBAHAN =====
+		else if (isDashing)
 		{
 			_animatedSprite.Play("walk"); // Ganti ke animasi dash kalau ada
 		}
@@ -130,6 +155,7 @@ public partial class player : CharacterBody2D
 		{
 			_animatedSprite.Play("walk");
 		}
+		// ===== PERBAIKAN: baris else if () yang kosong dihapus =====
 		else
 		{
 			_animatedSprite.Play("idle");
@@ -152,4 +178,25 @@ public partial class player : CharacterBody2D
 			isAttacking = false;
 		};
 	}
+
+	// ===== TAMBAHAN: Method Interact =====
+	public void PlayInteractAnimation()
+	{
+		if (!isInteracting)
+		{
+			isInteracting = true;
+			Velocity = Vector2.Zero;
+
+			GetTree().CreateTimer(InteractDuration).Timeout += () =>
+			{
+				isInteracting = false;
+			};
+		}
+	}
+
+	public bool IsInteracting()
+	{
+		return isInteracting;
+	}
+	// ===== END TAMBAHAN =====
 }
