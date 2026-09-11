@@ -1,0 +1,106 @@
+[gd_scene format=3 uid="uid://cedbwmvmplhuo"]
+
+[ext_resource type="Script" uid="uid://b3np6glob8khm" path="res://scripts/amari_ai.cs" id="1_r781i"]
+[ext_resource type="Texture2D" uid="uid://b80aoiyywohql" path="res://assets/Amari/idle.png" id="2_hcyhi"]
+[ext_resource type="Texture2D" uid="uid://bxmywmxkfu8jm" path="res://assets/Amari/running.png" id="3_t17te"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w5at3"]
+atlas = ExtResource("2_hcyhi")
+region = Rect2(0, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h5hgo"]
+atlas = ExtResource("2_hcyhi")
+region = Rect2(384, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_st7sy"]
+atlas = ExtResource("2_hcyhi")
+region = Rect2(768, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u05rf"]
+atlas = ExtResource("2_hcyhi")
+region = Rect2(1152, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j68p0"]
+atlas = ExtResource("3_t17te")
+region = Rect2(0, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mesph"]
+atlas = ExtResource("3_t17te")
+region = Rect2(384, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_mtsxi"]
+atlas = ExtResource("3_t17te")
+region = Rect2(768, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvdi4"]
+atlas = ExtResource("3_t17te")
+region = Rect2(1152, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fmy83"]
+atlas = ExtResource("3_t17te")
+region = Rect2(1536, 0, 384, 128)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dh7ns"]
+atlas = ExtResource("3_t17te")
+region = Rect2(1920, 0, 384, 128)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2ihpd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w5at3")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h5hgo")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_st7sy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u05rf")
+}],
+"loop": 1,
+"name": &"idle",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j68p0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mesph")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_mtsxi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jvdi4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fmy83")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dh7ns")
+}],
+"loop": 1,
+"name": &"walk",
+"speed": 10.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ihpd"]
+size = Vector2(27, 67)
+
+[node name="Amari" type="CharacterBody2D" unique_id=1373686669]
+collision_layer = 3
+script = ExtResource("1_r781i")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=775850362]
+scale = Vector2(1.2, 1.2)
+sprite_frames = SubResource("SpriteFrames_2ihpd")
+animation = &"idle"
+frame = 2
+frame_progress = 0.10580622
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=141885889]
+position = Vector2(-4.5, 5.5)
+shape = SubResource("RectangleShape2D_2ihpd")

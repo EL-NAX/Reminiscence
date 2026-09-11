@@ -1,0 +1,14 @@
+move_left    A
+move_right   D
+jump         Space
+dash         Shift
+attack       Mouse Button 1
+block        Mouse Button 2
+interact     F
+ability_1    Q
+ability_2    E
+ability_3    R
+ability_4    T
+ability_5    C
+inventory    Tab
+menu         Escape

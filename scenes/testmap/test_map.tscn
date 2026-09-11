@@ -1,0 +1,46 @@
+[gd_scene format=3 uid="uid://j4kgr0man0t0"]
+
+[ext_resource type="PackedScene" uid="uid://de4choyavvlm3" path="res://scenes/player/player.tscn" id="1_tctvb"]
+[ext_resource type="PackedScene" uid="uid://cug222j2k8thj" path="res://scenes/enemy/enemy.tscn" id="2_dftx8"]
+[ext_resource type="Script" uid="uid://5kc0nkn74223" path="res://scripts/Enemy.cs" id="3_dnlku"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uvc87"]
+size = Vector2(5000, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0lmhy"]
+size = Vector2(301, 107)
+
+[node name="TestMap" type="Node2D" unique_id=424334213]
+
+[node name="Player" parent="." unique_id=387767804 instance=ExtResource("1_tctvb")]
+position = Vector2(274, 341)
+
+[node name="Ground" type="StaticBody2D" parent="." unique_id=261620336]
+position = Vector2(400, 400)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Ground" unique_id=880365526]
+shape = SubResource("RectangleShape2D_uvc87")
+
+[node name="ColorRect" type="ColorRect" parent="Ground" unique_id=125459025]
+offset_left = -2491.0
+offset_top = -25.0
+offset_right = 4005.0
+offset_bottom = 333.0
+color = Color(0, 0.65882355, 0, 1)
+
+[node name="Platform1" type="StaticBody2D" parent="." unique_id=1596754364]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Platform1" unique_id=1593495469]
+position = Vector2(544.5, 347.5)
+shape = SubResource("RectangleShape2D_0lmhy")
+
+[node name="ColorRect" type="ColorRect" parent="Platform1" unique_id=939795776]
+offset_left = 393.0
+offset_top = 295.0
+offset_right = 694.0
+offset_bottom = 385.0
+color = Color(0, 0.65882355, 0, 1)
+
+[node name="Enemy" parent="." unique_id=2121423255 instance=ExtResource("2_dftx8")]
+position = Vector2(1000, 350)
+script = ExtResource("3_dnlku")

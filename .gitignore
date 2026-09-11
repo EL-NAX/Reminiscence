@@ -1,0 +1,18 @@
+# Godot 4+ specific ignores
+.godot/
+.import/
+
+# C# / .NET Build Folders (PENTING!)
+bin/
+obj/
+.vs/
+.vscode/
+.idea/
+*.csproj.user
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Temp files
+*.tmp
