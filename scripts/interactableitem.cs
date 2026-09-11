@@ -2,38 +2,34 @@ using Godot;
 
 public partial class interactableitem : Area2D
 {
-	private bool playerInRange = false;
 	private Label interactionLabel;
-	
-	// ===== TAMBAHAN: Referensi ke Player =====
-	private player currentPlayer = null;
-	// ===== END TAMBAHAN =====
+	private bool playerInRange = false;
+	private player currentPlayer; // <-- INI YANG DIPERBAIKI: tipe player (huruf kecil)
 
 	public override void _Ready()
 	{
-		Area2D interactionArea = GetNode<Area2D>("InteractionArea");
-		interactionArea.BodyEntered += OnPlayerEntered;
-		interactionArea.BodyExited += OnPlayerExited;
-		
+		// Ambil label di dalam scene (nama node harus "Label")
 		interactionLabel = GetNode<Label>("Label");
 		if (interactionLabel != null)
 		{
 			interactionLabel.Visible = false;
 		}
+
+		// Hubungkan signal dari InteractionArea
+		Area2D interactionArea = GetNode<Area2D>("InteractionArea");
+		interactionArea.BodyEntered += OnPlayerEntered;
+		interactionArea.BodyExited += OnPlayerExited;
 	}
 
 	private void OnPlayerEntered(Node2D body)
 	{
-		if (body is player)
+		// Cek apakah yang masuk adalah player (huruf kecil, sesuai nama class)
+		if (body is player playerNode)
 		{
 			playerInRange = true;
-			
-			// ===== TAMBAHAN: Simpan referensi player =====
-			currentPlayer = body as player;
-			// ===== END TAMBAHAN =====
-			
+			currentPlayer = playerNode; // Simpan referensi
 			GD.Print("Tekan F untuk berinteraksi");
-			
+
 			if (interactionLabel != null)
 			{
 				interactionLabel.Visible = true;
@@ -47,13 +43,8 @@ public partial class interactableitem : Area2D
 		if (body is player)
 		{
 			playerInRange = false;
-			
-			// ===== TAMBAHAN: Hapus referensi player =====
 			currentPlayer = null;
-			// ===== END TAMBAHAN =====
-			
-			GD.Print("Player keluar dari area item");
-			
+
 			if (interactionLabel != null)
 			{
 				interactionLabel.Visible = false;
@@ -63,37 +54,32 @@ public partial class interactableitem : Area2D
 
 	public override void _Process(double delta)
 	{
-		// Menggunakan Input Map dengan action "interact"
 		if (playerInRange && Input.IsActionJustPressed("interact"))
 		{
 			Interact();
 		}
 	}
 
-	// ===== DIUBAH: dari `private void Interact()` menjadi `private async void Interact()` =====
 	private async void Interact()
 	{
-		GD.Print("ITEM DIINTERAKSI!");
-		
-		// Sembunyikan label dulu
+		if (currentPlayer == null) return;
+
+		// Cegah spam interact
+		playerInRange = false;
+
+		// Sembunyikan label
 		if (interactionLabel != null)
 		{
 			interactionLabel.Visible = false;
 		}
-		
-		// Cegah spam interact
-		playerInRange = false;
-		
+
 		// Panggil animasi interact di player
-		if (currentPlayer != null)
-		{
-			currentPlayer.PlayInteractAnimation();
-			
-			// Tunggu animasi selesai (sesuaikan dengan InteractDuration di player)
-			await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
-		}
-		
+		currentPlayer.PlayInteractAnimation();
+
+		// Tunggu animasi selesai (sesuaikan dengan InteractDuration di player)
+		await ToSignal(GetTree().CreateTimer(0.5f), "timeout");
+
+		// Hapus item setelah diambil
 		QueueFree();
 	}
-	// ===== END DIUBAH =====
 }

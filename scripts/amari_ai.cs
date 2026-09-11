@@ -25,6 +25,11 @@ public partial class amari_ai : CharacterBody2D
 		else
 		{
 			GD.Print($"✅ Amari: Player ditemukan! Nama={player.Name}");
+			
+			// ===== TAMBAHAN: Ignore collision dengan Player =====
+			AddCollisionExceptionWith(player);
+			GD.Print("✅ Amari: Collision dengan Player di-ignore!");
+			// ===== END TAMBAHAN =====
 		}
 		
 		animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");

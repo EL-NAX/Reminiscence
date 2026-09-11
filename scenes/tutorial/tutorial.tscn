@@ -1,11 +1,18 @@
 [gd_scene format=3 uid="uid://dhddxivjyqyxv"]
 
+[ext_resource type="Script" uid="uid://b5figijt4mw7d" path="res://scripts/parallax_background.cs" id="1_afypq"]
 [ext_resource type="Texture2D" uid="uid://bvjibbmvflh7" path="res://assets/background/background.png" id="1_ha56g"]
 [ext_resource type="PackedScene" uid="uid://de4choyavvlm3" path="res://scenes/player/player.tscn" id="2_4nriy"]
 [ext_resource type="PackedScene" uid="uid://cedbwmvmplhuo" path="res://scenes/amari/amari.tscn" id="3_hsofu"]
+[ext_resource type="Texture2D" uid="uid://b5g263b72locw" path="res://assets/cloud/cloud1.png" id="3_owg8l"]
 [ext_resource type="TileSet" uid="uid://j486u2a8bu11" path="res://tileset/world.tres" id="4_0wrku"]
+[ext_resource type="Texture2D" uid="uid://eua4kijd5iur" path="res://assets/cloud/cloud2.png" id="4_3dmxa"]
+[ext_resource type="Texture2D" uid="uid://chxvv3kxtu1al" path="res://assets/cloud/cloud3.png" id="5_qhp2p"]
+[ext_resource type="Texture2D" uid="uid://b4mvytrq2p0dv" path="res://assets/cloud/cloud4.png" id="6_fkfu4"]
+[ext_resource type="Texture2D" uid="uid://d1ixyq88d2yi7" path="res://assets/tile/grass_4.png" id="6_ha56g"]
 [ext_resource type="Texture2D" uid="uid://cwhmn53fau3ud" path="res://assets/tile/decor.png" id="6_xjdtc"]
 [ext_resource type="Texture2D" uid="uid://cxxowlcm6diwx" path="res://assets/pohon/big_pine_tree.png" id="7_r6br1"]
+[ext_resource type="Texture2D" uid="uid://ceodleb5ketpq" path="res://assets/cloud/cloud5.png" id="7_wp0m2"]
 [ext_resource type="PackedScene" uid="uid://bcsthr5yqpqut" path="res://scenes/items/interactable_item.tscn" id="8_owg8l"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_x7a1n"]
@@ -201,9 +208,15 @@ texture = ExtResource("6_xjdtc")
 18:9/size_in_atlas = Vector2i(2, 3)
 18:9/0 = 0
 
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_4nriy"]
+texture = ExtResource("6_ha56g")
+0:0/size_in_atlas = Vector2i(12, 1)
+0:0/0 = 0
+
 [sub_resource type="TileSet" id="TileSet_rlm2d"]
 physics_layer_0/collision_layer = 1
 sources/0 = SubResource("TileSetAtlasSource_x7a1n")
+sources/1 = SubResource("TileSetAtlasSource_4nriy")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4n7fu"]
 size = Vector2(35, 663)
@@ -217,8 +230,10 @@ size = Vector2(1147.25, 34.5)
 [node name="Tutorial" type="Node2D" unique_id=807261446]
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=425469525]
+script = ExtResource("1_afypq")
 
 [node name="Sky" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1856779009]
+motion_scale = Vector2(0, 0)
 
 [node name="Sky" type="Sprite2D" parent="ParallaxBackground/Sky" unique_id=479464025]
 texture_filter = 1
@@ -228,16 +243,47 @@ texture = ExtResource("1_ha56g")
 
 [node name="Pohon" type="ParallaxLayer" parent="ParallaxBackground" unique_id=134617908]
 visible = false
+motion_scale = Vector2(0, 0)
 
 [node name="Pohon" type="Sprite2D" parent="ParallaxBackground/Pohon" unique_id=1298919491]
 position = Vector2(576, 324)
 scale = Vector2(1.125, 1.1250001)
 
-[node name="Player" parent="." unique_id=387767804 instance=ExtResource("2_4nriy")]
-position = Vector2(558, 368)
+[node name="Cloud" type="ParallaxLayer" parent="ParallaxBackground" unique_id=1658211586]
+position = Vector2(-24, 9)
+motion_scale = Vector2(2, 2)
+motion_mirroring = Vector2(760, 0)
+
+[node name="Cloud1" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=1086175433]
+position = Vector2(315.875, 92)
+scale = Vector2(4.0099998, 5.200001)
+texture = ExtResource("3_owg8l")
+
+[node name="Cloud2" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=163230170]
+position = Vector2(585, 114.99999)
+scale = Vector2(5.727207, 7.2999997)
+texture = ExtResource("4_3dmxa")
+
+[node name="Cloud3" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=1923653453]
+position = Vector2(724, 237)
+scale = Vector2(3.035453, 3.3125002)
+texture = ExtResource("5_qhp2p")
+
+[node name="Cloud4" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=1027742934]
+position = Vector2(361.00003, 228)
+scale = Vector2(3.1365745, 3.2931032)
+texture = ExtResource("6_fkfu4")
+
+[node name="Cloud5" type="Sprite2D" parent="ParallaxBackground/Cloud" unique_id=989220465]
+position = Vector2(903.00006, 142)
+scale = Vector2(2.4049997, 2.9714289)
+texture = ExtResource("7_wp0m2")
 
 [node name="Amari" parent="." unique_id=1373686669 instance=ExtResource("3_hsofu")]
-position = Vector2(329, 359)
+position = Vector2(435, 363)
+
+[node name="Player" parent="." unique_id=387767804 instance=ExtResource("2_4nriy")]
+position = Vector2(558, 368)
 
 [node name="Tile" type="TileMap" parent="." unique_id=1806167310]
 tile_set = ExtResource("4_0wrku")
@@ -250,7 +296,7 @@ y_sort_enabled = true
 [node name="Tile_YSort" type="TileMap" parent="YSort" unique_id=427199007]
 tile_set = SubResource("TileSet_rlm2d")
 format = 2
-layer_0/tile_data = PackedInt32Array(1507334, 0, 17, 1507337, 0, 17, 1507338, 0, 17, 1507339, 0, 17, 1441799, 0, 17, 1376261, 0, 17, 1507342, 1179648, 9, 1507340, 1179648, 9)
+layer_0/tile_data = PackedInt32Array(1507334, 0, 17, 1507337, 0, 17, 1507338, 0, 17, 1507339, 0, 17, 1441799, 0, 17, 1376261, 0, 17, 1507342, 1179648, 9, 1507340, 1179648, 9, 1572885, 1, 0, 1572897, 1, 0, 1572909, 1, 0, 1572921, 1, 0, 1572929, 1, 0)
 
 [node name="Border_Vertikal" type="StaticBody2D" parent="." unique_id=1189079651]
 

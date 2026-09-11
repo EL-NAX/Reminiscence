@@ -31,10 +31,9 @@ public partial class player : CharacterBody2D
 	private float coyoteTimer = 0.0f;
 	private bool isJumpHeld = false;
 
-	// ===== TAMBAHAN: INTERACT =====
+	// ===== INTERACT =====
 	private bool isInteracting = false;
 	[Export] public float InteractDuration = 0.5f;
-	// ===== END TAMBAHAN =====
 
 	public override void _Ready()
 	{
@@ -53,7 +52,7 @@ public partial class player : CharacterBody2D
 		if (jumpBufferTimer > 0) jumpBufferTimer -= dt;
 		if (coyoteTimer > 0) coyoteTimer -= dt;
 
-		// ===== TAMBAHAN: Cegah movement saat interact =====
+		// Cegah movement saat interact
 		if (isInteracting)
 		{
 			Velocity = new Vector2(0, Velocity.Y);
@@ -65,7 +64,6 @@ public partial class player : CharacterBody2D
 			UpdateAnimations(0);
 			return;
 		}
-		// ===== END TAMBAHAN =====
 
 		if (isDashing)
 		{
@@ -92,7 +90,7 @@ public partial class player : CharacterBody2D
 
 		Velocity = new Vector2(direction * Speed, Velocity.Y);
 
-		// Jump Logic
+		// Jump
 		if (Input.IsActionJustPressed("jump"))
 		{
 			jumpBufferTimer = 0.1f;
@@ -110,14 +108,13 @@ public partial class player : CharacterBody2D
 			coyoteTimer = 0;
 		}
 
-		// Dash Logic (Hanya di tanah)
+		// Dash
 		if (Input.IsActionJustPressed("dash") && dashCooldownTimer <= 0)
 		{
 			if (IsOnFloor()) StartDash();
 		}
 
-		// ===== ATTACK LOGIC (Hanya bisa saat DIAM / IDLE) =====
-		// direction == 0 artinya tidak menekan A atau D
+		// Attack (hanya saat diam)
 		if (Input.IsActionJustPressed("attack") && !isAttacking && attackCooldown <= 0 && direction == 0)
 		{
 			Attack();
@@ -132,16 +129,13 @@ public partial class player : CharacterBody2D
 		if (facingDirection > 0) _animatedSprite.FlipH = false;
 		else if (facingDirection < 0) _animatedSprite.FlipH = true;
 
-		// PRIORITAS: Interact -> Dash -> Attack -> Jump -> Walk -> Idle
-		// ===== TAMBAHAN: Cek interact paling atas =====
 		if (isInteracting)
 		{
 			_animatedSprite.Play("interact");
 		}
-		// ===== END TAMBAHAN =====
 		else if (isDashing)
 		{
-			_animatedSprite.Play("walk"); // Ganti ke animasi dash kalau ada
+			_animatedSprite.Play("walk");
 		}
 		else if (isAttacking)
 		{
@@ -155,7 +149,6 @@ public partial class player : CharacterBody2D
 		{
 			_animatedSprite.Play("walk");
 		}
-		// ===== PERBAIKAN: baris else if () yang kosong dihapus =====
 		else
 		{
 			_animatedSprite.Play("idle");
@@ -179,7 +172,7 @@ public partial class player : CharacterBody2D
 		};
 	}
 
-	// ===== TAMBAHAN: Method Interact =====
+	// ===== METHOD YANG DICARI OLEH interactableitem.cs =====
 	public void PlayInteractAnimation()
 	{
 		if (!isInteracting)
@@ -198,5 +191,4 @@ public partial class player : CharacterBody2D
 	{
 		return isInteracting;
 	}
-	// ===== END TAMBAHAN =====
 }
