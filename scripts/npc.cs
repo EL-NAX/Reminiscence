@@ -1,48 +1,167 @@
 using Godot;
 
-public partial class Npc : CharacterBody2D
+public partial class npc : Node2D
 {
-	[Export] public float Speed = 60f;          // Kecepatan jalan (atur di Inspector kalau mau lebih pelan/lambat)
-	[Export] public float StopDistance = 20f;   // Berhenti kalau sudah sedekat ini dari target
-	[Export] public float SideOffset = 50f;     // Jarak bersebelahan dari player (50 pixel ke kiri)
+	private CanvasLayer _canvasLayer;
+	private Label _dialogueLabel;
+	private Label _interactLabel;
 
-	// Ambil gravitasi default dari project settings
-	private float _gravity = (float)ProjectSettings.GetSetting("physics/2d/default_gravity");
-	private CharacterBody2D _player;
+	private readonly string[] _dialogues = new string[]
+	{
+		"NPC : Hei kalian mau apa disini",
+		"Krieger: Hemm kami ingin mencari es!",
+		"NPC : Sebaiknya kalian hati-hati",
+		"Krieger: Baik terimakasih",
+		"Krieger: Emang kamu siapa disini",
+		"NPC : Saya penghuni goa ini",
+		"Krieger: Oh oke, kalo begitu aku pergi dulu ya",
+		"NPC : Ya"
+	};
+
+	private int _currentIndex = 0;
+	private bool _isPlayerInRange = false;
+	private bool _isDialogueActive = false;
+	
+	// Variabel untuk Efek Ketik (Typewriter)
+	private bool _isTyping = false;
+	private Tween _textTween;
+	[Export] private float _typeSpeed = 0.04f;
+
+	private Node2D _targetPlayer = null;
 
 	public override void _Ready()
 	{
-		_player = GetTree().GetFirstNodeInGroup("Player") as CharacterBody2D;
+		_canvasLayer = GetNode<CanvasLayer>("CanvasLayer");
+		_dialogueLabel = GetNode<Label>("CanvasLayer/Panel/Label");
+		_interactLabel = GetNode<Label>("InteractLabel");
+
+		_canvasLayer.Hide();
+		_interactLabel.Hide();
 	}
 
-	public override void _PhysicsProcess(double delta)
+	public override void _Process(double delta)
 	{
-		if (_player == null) return;
-
-		// 1. TERAPKAN GRAVITASI (Biar nggak terbang, nempel tanah)
-		if (!IsOnFloor())
+		if (_isPlayerInRange && !_isDialogueActive && Input.IsActionJustPressed("interact"))
 		{
-			Velocity += new Vector2(0, _gravity * (float)delta);
+			StartDialogue();
+		}
+		else if (_isDialogueActive && Input.IsActionJustPressed("ui_accept"))
+		{
+			if (_isTyping)
+			{
+				SkipTypewriter();
+			}
+			else
+			{
+				AdvanceDialogue();
+			}
+		}
+	}
+
+	private void StartDialogue()
+	{
+		_isDialogueActive = true;
+		_currentIndex = 0;
+
+		_interactLabel.Hide();
+		_canvasLayer.Show();
+
+		TogglePlayerMovement(_targetPlayer, false);
+		ShowCurrentDialogue();
+	}
+
+	private void ShowCurrentDialogue()
+	{
+		string currentText = _dialogues[_currentIndex];
+		_dialogueLabel.Text = currentText;
+		_dialogueLabel.VisibleRatio = 0.0f;
+		_isTyping = true;
+
+		if (_textTween != null && _textTween.IsValid())
+		{
+			_textTween.Kill();
 		}
 
-		// 2. HITUNG TARGET POSISI SAMPING PLAYER
-		// Target X = posisi player di kiri (bisa diubah ke kanan dengan + SideOffset)
-		Vector2 targetPosition = _player.GlobalPosition + new Vector2(-SideOffset, 0);
+		float duration = currentText.Length * _typeSpeed;
+		_textTween = CreateTween();
+		_textTween.TweenProperty(_dialogueLabel, "visible_ratio", 1.0f, duration);
+		_textTween.Finished += () => _isTyping = false;
+	}
 
-		// 3. HITUNG JARAK HORIZONTAL SAJA (Sumbu X)
-		float distanceX = targetPosition.X - GlobalPosition.X;
-
-		if (Mathf.Abs(distanceX) > StopDistance)
+	private void SkipTypewriter()
+	{
+		if (_textTween != null && _textTween.IsValid())
 		{
-			// Bergerak horizontal ke arah target, biarkan Velocity.Y mengikuti gravitasi
-			Velocity = new Vector2(Mathf.Sign(distanceX) * Speed, Velocity.Y);
+			_textTween.Kill();
+		}
+		_dialogueLabel.VisibleRatio = 1.0f;
+		_isTyping = false;
+	}
+
+	private void AdvanceDialogue()
+	{
+		_currentIndex++;
+		if (_currentIndex < _dialogues.Length)
+		{
+			ShowCurrentDialogue();
 		}
 		else
 		{
-			// Berhenti bergerak horizontal, biarkan gravitasi yang menahannya di tanah
-			Velocity = new Vector2(0, Velocity.Y);
+			EndDialogue();
 		}
+	}
 
-		MoveAndSlide();
+	private void EndDialogue()
+	{
+		_canvasLayer.Hide();
+		_isDialogueActive = false;
+		_isTyping = false;
+
+		TogglePlayerMovement(_targetPlayer, true);
+
+		if (_isPlayerInRange)
+		{
+			_interactLabel.Show();
+		}
+	}
+
+	private void TogglePlayerMovement(Node2D player, bool enable)
+	{
+		if (player != null)
+		{
+			player.SetPhysicsProcess(enable);
+			player.SetProcess(enable);
+		}
+	}
+
+	private void OnDetectAreaBodyEntered(Node2D body)
+	{
+		// Hanya deteksi Player (Amari diabaikan)
+		if (body.IsInGroup("player") || body.Name == "Player")
+		{
+			_isPlayerInRange = true;
+			_targetPlayer = body;
+
+			if (!_isDialogueActive)
+			{
+				_interactLabel.Show();
+			}
+		}
+	}
+
+	private void OnDetectAreaBodyExited(Node2D body)
+	{
+		// Hanya merespons jika yang keluar adalah Player
+		if (body == _targetPlayer)
+		{
+			if (_isDialogueActive)
+			{
+				EndDialogue();
+			}
+
+			_isPlayerInRange = false;
+			_interactLabel.Hide();
+			_targetPlayer = null;
+		}
 	}
 }

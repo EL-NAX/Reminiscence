@@ -28,12 +28,11 @@ public partial class interactableitem : Area2D
 		{
 			playerInRange = true;
 			currentPlayer = playerNode; // Simpan referensi
-			GD.Print("Tekan F untuk berinteraksi");
 
 			if (interactionLabel != null)
 			{
 				interactionLabel.Visible = true;
-				interactionLabel.Text = "Tekan F untuk berinteraksi";
+				interactionLabel.Text = "(F) Interact";
 			}
 		}
 	}

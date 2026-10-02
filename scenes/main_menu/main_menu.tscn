@@ -21,6 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://qrl5h5skc0dp" path="res://assets/button/btn_setting.tres" id="19_pbfag"]
 [ext_resource type="Texture2D" uid="uid://i2cyf4lg3ioh" path="res://assets/button/btn_diary_hover.tres" id="20_7xub0"]
 [ext_resource type="Texture2D" uid="uid://co5cy2jw3lti6" path="res://assets/button/btn_diary.tres" id="21_r4k1l"]
+[ext_resource type="AudioStream" uid="uid://bsn1aingw57yt" path="res://assets/audio/bgm/rem_amb_main_menu.ogg" id="22_tfctf"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_4n7fu"]
 bg_color = Color(0.6, 0.6, 0.6, 0)
@@ -136,7 +137,13 @@ position = Vector2(576.25006, 367.87503)
 scale = Vector2(1.728979, 1.482)
 texture = ExtResource("10_0xlsr")
 
-[node name="Sprite2D" type="Sprite2D" parent="ParallaxBackground" unique_id=159851818]
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2075674844]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+color = Color(0.15686275, 0.15294118, 0.14117648, 0.36862746)
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=159851818]
 modulate = Color(1, 1, 1, 0.7176471)
 texture_filter = 1
 position = Vector2(281.875, 323.37497)
@@ -285,6 +292,10 @@ offset_right = 82.0
 offset_bottom = 40.0
 theme_override_font_sizes/font_size = 20
 text = "Setting"
+
+[node name="RemAmbMainMenu" type="AudioStreamPlayer" parent="." unique_id=1392140137]
+stream = ExtResource("22_tfctf")
+autoplay = true
 
 [connection signal="pressed" from="UILayer/MenuUI/MenuBos/Setting" to="UILayer" method="_on_setting_pressed"]
 [connection signal="pressed" from="UILayer/MenuUI/MenuBos/Diary" to="UILayer" method="_on_diary_pressed"]

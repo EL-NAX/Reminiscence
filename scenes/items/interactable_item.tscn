@@ -7,7 +7,7 @@
 size = Vector2(40, 40)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_2ihpd"]
-radius = 70.0
+radius = 27.0
 
 [node name="InteractableItem" type="Area2D" unique_id=1708812332]
 script = ExtResource("1_l8e7e")

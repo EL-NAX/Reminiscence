@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://dymcck57113as" path="res://assets/player/player_animation1.png" id="3_gmlin"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ihpd"]
-size = Vector2(38, 74)
+size = Vector2(38, 72)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0lmhy"]
 size = Vector2(34, 74.25)
@@ -147,7 +147,7 @@ animations = [{
 }],
 "loop": 1,
 "name": &"attack",
-"speed": 5.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -254,17 +254,17 @@ collision_mask = 3
 script = ExtResource("1_dovo2")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=838199022]
-position = Vector2(-1, -5)
+position = Vector2(-1, -6)
 shape = SubResource("RectangleShape2D_2ihpd")
 
 [node name="Polygon2D" type="Polygon2D" parent="." unique_id=629619589]
 
 [node name="Camera2D" type="Camera2D" parent="." unique_id=324231923]
-zoom = Vector2(2, 2)
+zoom = Vector2(1.5, 1.5)
 limit_left = 0
 limit_top = 0
 limit_right = 1150
-limit_bottom = 650
+limit_bottom = 440
 limit_smoothed = true
 position_smoothing_enabled = true
 
@@ -276,7 +276,7 @@ position = Vector2(35, -4.875)
 shape = SubResource("RectangleShape2D_0lmhy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=785519052]
+position = Vector2(-2, -7)
 scale = Vector2(2, 2)
 sprite_frames = SubResource("SpriteFrames_2ihpd")
 animation = &"interact"
-frame_progress = 0.71394426

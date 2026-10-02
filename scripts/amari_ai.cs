@@ -14,34 +14,9 @@ public partial class amari_ai : CharacterBody2D
 	
 	public override void _Ready()
 	{
-		GD.Print("🔵 Amari: Script mulai!");
-		
 		player = GetParent().GetNode<CharacterBody2D>("Player");
-		
-		if (player == null)
-		{
-			GD.PrintErr("❌ Amari: Player TIDAK ditemukan!");
-		}
-		else
-		{
-			GD.Print($"✅ Amari: Player ditemukan! Nama={player.Name}");
-			
-			// ===== TAMBAHAN: Ignore collision dengan Player =====
-			AddCollisionExceptionWith(player);
-			GD.Print("✅ Amari: Collision dengan Player di-ignore!");
-			// ===== END TAMBAHAN =====
-		}
-		
+		AddCollisionExceptionWith(player);
 		animatedSprite = GetNode<AnimatedSprite2D>("AnimatedSprite2D");
-		if (animatedSprite == null)
-		{
-			GD.PrintErr("❌ Amari: AnimatedSprite2D tidak ditemukan!");
-		}
-		else
-		{
-			GD.Print("✅ Amari: AnimatedSprite2D ditemukan!");
-			animatedSprite.Play("idle");
-		}
 		
 		FloorStopOnSlope = true;
 		FloorMaxAngle = Mathf.DegToRad(45);

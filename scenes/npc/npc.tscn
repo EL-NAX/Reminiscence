@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://d0fwpdpqpynyf"]
+
+[ext_resource type="Script" uid="uid://65etjcnn2j36" path="res://scripts/npc.cs" id="1_pcwmf"]
+[ext_resource type="Texture2D" uid="uid://btq7ga1knbp8w" path="res://assets/npc_test/shuita111.png" id="1_sspvn"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wol18"]
+size = Vector2(59, 93)
+
+[node name="Node2D" type="CharacterBody2D" unique_id=55572866]
+position = Vector2(580, 227)
+script = ExtResource("1_pcwmf")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=47136017]
+position = Vector2(46, 46.5)
+texture = ExtResource("1_sspvn")
+
+[node name="DetectArea" type="Area2D" parent="." unique_id=2025413934]
+position = Vector2(238, 114)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectArea" unique_id=1245240709]
+position = Vector2(-191.5, -63.5)
+shape = SubResource("RectangleShape2D_wol18")
+
+[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=711856900]
+
+[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=315710179]
+offset_top = 517.0
+offset_right = 1152.0
+offset_bottom = 648.0
+
+[node name="Label" type="Label" parent="CanvasLayer/Panel" unique_id=618935763]
+layout_mode = 0
+offset_left = 18.0
+offset_top = 12.0
+offset_right = 1131.0
+offset_bottom = 123.0
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="InteractLabel" type="Label" parent="." unique_id=1965295684]
+offset_left = 33.0
+offset_top = -8.0
+offset_right = 58.0
+offset_bottom = 3.0
+theme_override_font_sizes/font_size = 7
+text = "NPC (F)"
+
+[connection signal="body_entered" from="DetectArea" to="." method="OnDetectAreaBodyEntered"]
+[connection signal="body_exited" from="DetectArea" to="." method="OnDetectAreaBodyExited"]
