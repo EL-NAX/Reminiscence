@@ -16,3 +16,9 @@ Thumbs.db
 
 # Temp files
 *.tmp
+
+# Export builds
+*.exe
+*.pck
+export/
+build/
