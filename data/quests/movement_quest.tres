@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="quest_data" format=3 uid="uid://bjw1f7a1kyv6b"]
+
+[ext_resource type="Texture2D" uid="uid://dxk1uda8p0yjf" path="res://assets/ui/keybind_a.tres" id="1_7dkfu"]
+[ext_resource type="Script" uid="uid://vu82yulrpmco" path="res://scripts/quest_data.cs" id="1_744un"]
+[ext_resource type="Texture2D" uid="uid://dey644wwnssb4" path="res://assets/ui/keybind_d.tres" id="2_alwj8"]
+
+[resource]
+script = ExtResource("1_744un")
+QuestTitle = "Gerakan"
+SubQuests = Array[String](["Berjalan ke kiri", "Berjalan ke kanan"])
+KeyIcons = Array[Texture2D]([ExtResource("1_7dkfu"), ExtResource("2_alwj8")])
+SubActions = Array[String](["left", "right"])
+metadata/_custom_type_script = "uid://vu82yulrpmco"

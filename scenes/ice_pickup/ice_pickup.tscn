@@ -1,0 +1,13 @@
+[gd_scene format=3 uid="uid://b87drauowphkv"]
+
+[ext_resource type="Script" uid="uid://c5e6alm0d23tu" path="res://scripts/ice_pickup.cs" id="1_4mlqi"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_wp3hj"]
+size = Vector2(27, 27)
+
+[node name="IcePickup" type="Area2D" unique_id=191943186]
+script = ExtResource("1_4mlqi")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1826925797]
+position = Vector2(0.5, 2.5)
+shape = SubResource("RectangleShape2D_wp3hj")

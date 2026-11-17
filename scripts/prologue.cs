@@ -5,11 +5,21 @@ public partial class prologue : Node2D
 {
 	[Export] private Node2D _player;
 	[Export] private Node2D _amari;
-	[Export] private Panel _dialoguePanel;
+	[Export] private NinePatchRect _dialoguePanel;
 	[Export] private Label _dialogueLabel;
+	[Export] private Control _continueLabel; 
+	
+	[Export] private Control _subjectBox;
+	[Export] private Label _subjectLabel;
+	
+	// VARIABEL BUAT LABEL F
+	[Export] private Label _fInstruction;
+
 	[Export] private ColorRect _blackScreen;
 
 	[Export] private string _tutorialScenePath = "res://scenes/tutorial/tutorial.tscn";
+
+	private Tween _blinkTween;
 
 	private readonly string[] _dialogues = new string[]
 	{
@@ -28,9 +38,48 @@ public partial class prologue : Node2D
 		"Amari: Nah, begitu dong! Ayo cepat sebelum harinya makin gelap!"
 	};
 
+	// Fungsi baru untuk berkedip
+	private void StartBlinking()
+	{
+		if (_continueLabel == null) return;
+		
+		// Munculin panah & F
+		_continueLabel.Visible = true;
+		_continueLabel.Modulate = new Color(1, 1, 1, 1);
+		if (_fInstruction != null) 
+		{
+			_fInstruction.Visible = true;
+			_fInstruction.Modulate = new Color(1, 1, 1, 1);
+		}
+
+		if (_blinkTween != null && _blinkTween.IsValid()) _blinkTween.Kill();
+		_blinkTween = CreateTween();
+		_blinkTween.SetLoops(); 
+		
+		// Kedipin panah
+		_blinkTween.TweenProperty(_continueLabel, "modulate:a", 0.2f, 0.5f);
+		// Kedipin F barengan (paralel)
+		if (_fInstruction != null)
+			_blinkTween.Parallel().TweenProperty(_fInstruction, "modulate:a", 0.2f, 0.5f);
+			
+		// Balikin ke terang
+		_blinkTween.TweenProperty(_continueLabel, "modulate:a", 1.0f, 0.5f);
+		if (_fInstruction != null)
+			_blinkTween.Parallel().TweenProperty(_fInstruction, "modulate:a", 1.0f, 0.5f);
+	}
+
+	private void StopBlinking()
+	{
+		if (_continueLabel == null) return;
+		_continueLabel.Visible = false;
+		
+		if (_fInstruction != null) _fInstruction.Visible = false; 
+
+		if (_blinkTween != null && _blinkTween.IsValid()) _blinkTween.Kill();
+	}
+
 	public override async void _Ready()
 	{
-		// 0. Kunci warna background jeda frame jadi hitam saat game jalan
 		RenderingServer.SetDefaultClearColor(Colors.Black);
 
 		if (_dialoguePanel == null || _blackScreen == null || _dialogueLabel == null)
@@ -40,13 +89,12 @@ public partial class prologue : Node2D
 		}
 
 		_dialoguePanel.Hide();
+		StopBlinking();
 
-		// 1. Layar Hitam Pekat di Awal
 		_blackScreen.Show();
 		_blackScreen.SetAnchorsAndOffsetsPreset(Control.LayoutPreset.FullRect);
 		_blackScreen.Color = new Color(0, 0, 0, 1.0f);
 
-		// 2. Nonaktifkan Pergerakan Karakter
 		if (_player != null)
 		{
 			_player.SetProcess(false);
@@ -58,7 +106,6 @@ public partial class prologue : Node2D
 			_amari.SetPhysicsProcess(false);
 		}
 
-		// 3. Animasi Serang Player saat Masih Hitam
 		var playerSprite = _player?.GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D") 
 						   ?? _player?.GetNodeOrNull<AnimatedSprite2D>("Sprite2D");
 
@@ -71,7 +118,6 @@ public partial class prologue : Node2D
 			}
 		}
 
-		// 4. Fade In Mulus
 		Tween fadeInTween = CreateTween();
 		fadeInTween.TweenProperty(_blackScreen, "color:a", 0.0f, 1.0f)
 				   .SetTrans(Tween.TransitionType.Cubic)
@@ -79,7 +125,6 @@ public partial class prologue : Node2D
 
 		await ToSignal(fadeInTween, Tween.SignalName.Finished);
 
-		// 5. Jalankan Urutan Cutscene
 		await RunPrologueSequence();
 	}
 
@@ -93,15 +138,14 @@ public partial class prologue : Node2D
 
 		Camera2D camera = _player?.GetNodeOrNull<Camera2D>("Camera2D");
 
-		// STEP 1: Amari Berjalan Mendekat
 		if (_amari != null && _player != null)
 		{
 			if (amariSprite != null)
 			{
 				amariSprite.FlipH = true;
-				if (amariSprite.SpriteFrames != null && amariSprite.SpriteFrames.HasAnimation("walk"))
+				if (amariSprite.SpriteFrames != null && amariSprite.SpriteFrames.HasAnimation("walkWithKeranjang"))
 				{
-					amariSprite.Play("walk");
+					amariSprite.Play("walkWithKeranjang");
 				}
 			}
 
@@ -113,15 +157,14 @@ public partial class prologue : Node2D
 
 			await ToSignal(moveTween, Tween.SignalName.Finished);
 
-			if (amariSprite != null && amariSprite.SpriteFrames != null && amariSprite.SpriteFrames.HasAnimation("idle"))
+			if (amariSprite != null && amariSprite.SpriteFrames != null && amariSprite.SpriteFrames.HasAnimation("idleWithKeranjang"))
 			{
-				amariSprite.Play("idle");
+				amariSprite.Play("idleWithKeranjang");
 			}
 		}
 
 		await ToSignal(GetTree().CreateTimer(0.3f), SceneTreeTimer.SignalName.Timeout);
 
-		// STEP 2: Player Berhenti Attack -> Balik Badan
 		if (playerSprite != null)
 		{
 			if (playerSprite.SpriteFrames != null && playerSprite.SpriteFrames.HasAnimation("idle"))
@@ -131,7 +174,6 @@ public partial class prologue : Node2D
 			playerSprite.FlipH = false;
 		}
 
-		// STEP 3: ZOOM IN KAMERA (Sebelum Dialog Dimulai)
 		Vector2 originalZoom = new Vector2(1.0f, 1.0f);
 		if (camera != null)
 		{
@@ -146,41 +188,59 @@ public partial class prologue : Node2D
 			await ToSignal(zoomIn, Tween.SignalName.Finished);
 		}
 
-		// =========================================================================
-		// STEP 4: PERCAKAPAN DIALOG DENGAN EFEK KETIKAN (TYPEWRITER)
-		// =========================================================================
 		_dialoguePanel.Show();
+		StopBlinking();
 
 		for (int i = 0; i < _dialogues.Length; i++)
 		{
-			_dialogueLabel.Text = _dialogues[i];
-			_dialogueLabel.VisibleRatio = 0.0f; // Sembunyikan teks di awal
+			string speaker = "";
+			string text = _dialogues[i];
 
-			// Durasi ketikan disesuaikan dengan panjang kalimat (0.03f detik per huruf)
-			float duration = _dialogues[i].Length * 0.03f;
+			if (_dialogues[i].Contains(":"))
+			{
+				var parts = _dialogues[i].Split(new[] { ':' }, 2);
+				speaker = parts[0].Trim();
+				text = parts[1].Trim();
+			}
+
+			if (_subjectLabel != null) _subjectLabel.Text = speaker;
+			if (_subjectBox != null) _subjectBox.Visible = !string.IsNullOrEmpty(speaker);
+
+			_dialogueLabel.Text = text;
+			_dialogueLabel.VisibleRatio = 0.0f; 
+
+			StopBlinking();
+
+			float duration = text.Length * 0.03f;
 
 			Tween textTween = CreateTween();
 			textTween.TweenProperty(_dialogueLabel, "visible_ratio", 1.0f, duration);
 
 			bool isTyping = true;
-			textTween.Finished += () => isTyping = false;
+			
+			textTween.Finished += () => 
+			{
+				isTyping = false;
+				StartBlinking();
+			};
 
-			// Loop menunggu tombol dipencet
 			while (true)
 			{
-				if (Input.IsActionJustPressed("ui_accept"))
+				if (Input.IsActionJustPressed("ui_accept") || 
+					Input.IsActionJustPressed("jump") || 
+					Input.IsActionJustPressed("interact"))
 				{
 					if (isTyping)
 					{
-						// Jika sedang mengetik lalu dipencet -> Tampilkan SEMUA teks langsung (Skip animasi ketik)
 						textTween.Kill();
 						_dialogueLabel.VisibleRatio = 1.0f;
 						isTyping = false;
+						StartBlinking();
 						await ToSignal(GetTree().CreateTimer(0.15f), SceneTreeTimer.SignalName.Timeout);
 					}
 					else
 					{
-						// Jika teks sudah muncul semua lalu dipencet -> Lanjut dialog berikutnya
+						StopBlinking();
 						break;
 					}
 				}
@@ -191,8 +251,8 @@ public partial class prologue : Node2D
 		}
 
 		_dialoguePanel.Hide();
+		StopBlinking();
 
-		// STEP 5: ZOOM OUT KAMERA (Kembali Normal)
 		if (camera != null)
 		{
 			Tween zoomOut = CreateTween();
@@ -203,7 +263,6 @@ public partial class prologue : Node2D
 			await ToSignal(zoomOut, Tween.SignalName.Finished);
 		}
 
-		// STEP 6: Fade Out ke Hitam & Pindah Scene
 		Tween fadeOutTween = CreateTween();
 		fadeOutTween.TweenProperty(_blackScreen, "color:a", 1.0f, 0.8f)
 					.SetTrans(Tween.TransitionType.Cubic)

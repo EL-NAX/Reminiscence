@@ -1,0 +1,13 @@
+[gd_resource type="Resource" script_class="quest_data" format=3 uid="uid://bsbnqrsc67p5r"]
+
+[ext_resource type="Texture2D" uid="uid://cwqwnvbffj45b" path="res://assets/ui/keybind_f.tres" id="1_e6cgm"]
+[ext_resource type="Script" uid="uid://vu82yulrpmco" path="res://scripts/quest_data.cs" id="1_pv54l"]
+
+[resource]
+script = ExtResource("1_pv54l")
+QuestTitle = "Kumpulkan Es"
+Type = 1
+SubQuests = Array[String](["Kumpulkan es"])
+KeyIcons = Array[Texture2D]([ExtResource("1_e6cgm")])
+TargetCount = 9
+metadata/_custom_type_script = "uid://vu82yulrpmco"

@@ -1,0 +1,152 @@
+[gd_scene format=3 uid="uid://cj74lnu6alksx"]
+
+[ext_resource type="Script" uid="uid://cjkenxr2ervi8" path="res://scripts/sword_qte.cs" id="1_fr57u"]
+[ext_resource type="Texture2D" uid="uid://beocqf2fv4q5v" path="res://assets/ui/mouse_right.tres" id="1_k7nss"]
+[ext_resource type="Texture2D" uid="uid://b83sukxdcsxsv" path="res://assets/button/space_spam_animation.png" id="3_ervni"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kcwe1"]
+bg_color = Color(0, 1, 0, 1)
+border_width_left = 10
+border_width_top = 10
+border_width_right = 10
+border_width_bottom = 10
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xrqjb"]
+atlas = ExtResource("3_ervni")
+region = Rect2(0, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jpi42"]
+atlas = ExtResource("3_ervni")
+region = Rect2(64, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_kcwe1"]
+atlas = ExtResource("3_ervni")
+region = Rect2(128, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_20ivp"]
+atlas = ExtResource("3_ervni")
+region = Rect2(192, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_a6oxw"]
+atlas = ExtResource("3_ervni")
+region = Rect2(256, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_vflwj"]
+atlas = ExtResource("3_ervni")
+region = Rect2(320, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_2qn6o"]
+atlas = ExtResource("3_ervni")
+region = Rect2(384, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1vevw"]
+atlas = ExtResource("3_ervni")
+region = Rect2(448, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tpun5"]
+atlas = ExtResource("3_ervni")
+region = Rect2(512, 0, 64, 64)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b60gi"]
+atlas = ExtResource("3_ervni")
+region = Rect2(576, 0, 64, 64)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_2ihpd"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xrqjb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jpi42")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_kcwe1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_20ivp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_a6oxw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_vflwj")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_2qn6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1vevw")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tpun5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b60gi")
+}],
+"loop": 1,
+"name": &"space_blink",
+"speed": 8.0
+}]
+
+[node name="sword_qte" type="CanvasLayer" unique_id=1494264728]
+script = ExtResource("1_fr57u")
+
+[node name="Root" type="Control" parent="." unique_id=201727421]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="DimBackground" type="ColorRect" parent="Root" unique_id=1809829800]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.019607844)
+
+[node name="CenterContainer" type="Control" parent="Root" unique_id=1071813946]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Root/CenterContainer" unique_id=587693437]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -52.0
+offset_top = -13.0
+offset_right = 52.0
+offset_bottom = 189.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="HintLabel" type="Label" parent="Root/CenterContainer/VBoxContainer" unique_id=65147442]
+layout_mode = 2
+
+[node name="ProgressBar" type="ProgressBar" parent="Root/CenterContainer/VBoxContainer" unique_id=1656589013]
+layout_mode = 2
+theme_override_styles/fill = SubResource("StyleBoxFlat_kcwe1")
+show_percentage = false
+
+[node name="MouseIcon" type="TextureRect" parent="Root/CenterContainer/VBoxContainer" unique_id=196217823]
+visible = false
+layout_mode = 2
+texture = ExtResource("1_k7nss")
+
+[node name="SpaceIndicator" type="AnimatedSprite2D" parent="Root/CenterContainer/VBoxContainer" unique_id=1343705204]
+position = Vector2(54.666687, -58.666683)
+scale = Vector2(3.5, 3.5)
+sprite_frames = SubResource("SpriteFrames_2ihpd")
+animation = &"space_blink"
+frame_progress = 0.35835454

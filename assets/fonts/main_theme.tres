@@ -1,0 +1,7 @@
+[gd_resource type="Theme" format=3 uid="uid://ciny27crjdrr4"]
+
+[ext_resource type="FontFile" uid="uid://fajphad0ydix" path="res://assets/fonts/WilloClassic-Regular.ttf" id="1_gvjhl"]
+
+[resource]
+default_font = ExtResource("1_gvjhl")
+default_font_size = 16

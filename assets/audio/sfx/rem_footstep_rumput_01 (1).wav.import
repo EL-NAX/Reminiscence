@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://dkxxcadarq8ko"
+path="res://.godot/imported/rem_footstep_rumput_01 (1).wav-c56c06a4776165a8b49856f5e44be9dd.sample"
+
+[deps]
+
+source_file="res://assets/audio/sfx/rem_footstep_rumput_01 (1).wav"
+dest_files=["res://.godot/imported/rem_footstep_rumput_01 (1).wav-c56c06a4776165a8b49856f5e44be9dd.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=2

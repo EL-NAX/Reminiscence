@@ -23,7 +23,9 @@
 [ext_resource type="Texture2D" uid="uid://dal2mqm75qqr6" path="res://assets/background/bg_tree2.png" id="14_eq061"]
 [ext_resource type="Texture2D" uid="uid://c23q0y7uos3yy" path="res://assets/background/bg_tree4.png" id="15_nd42d"]
 [ext_resource type="Texture2D" uid="uid://deofm1m0mox51" path="res://assets/pohon/tree1.png" id="19_m2tf0"]
+[ext_resource type="Texture2D" uid="uid://dmt22wuyu1jkl" path="res://assets/ui/panel.png" id="24_58qxn"]
 [ext_resource type="AudioStream" uid="uid://dphrav0cuht1l" path="res://assets/audio/bgm/rem_amb_forest.ogg" id="24_x0s26"]
+[ext_resource type="Texture2D" uid="uid://ch244od2kwirm" path="res://assets/ui/next.png" id="25_hsf45"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4n7fu"]
 size = Vector2(35, 663)
@@ -281,13 +283,17 @@ custom_data_layer_1/type = 4
 sources/0 = SubResource("TileSetAtlasSource_x7a1n")
 sources/1 = SubResource("TileSetAtlasSource_4nriy")
 
-[node name="prologue" type="Node2D" unique_id=807261446 node_paths=PackedStringArray("_player", "_amari", "_dialoguePanel", "_dialogueLabel", "_blackScreen")]
+[node name="prologue" type="Node2D" unique_id=807261446 node_paths=PackedStringArray("_player", "_amari", "_dialoguePanel", "_dialogueLabel", "_continueLabel", "_subjectBox", "_subjectLabel", "_fInstruction", "_blackScreen")]
 script = ExtResource("1_f822g")
 _player = NodePath("Player")
 _amari = NodePath("Amari")
-_dialoguePanel = NodePath("CanvasLayer/Panel")
-_dialogueLabel = NodePath("CanvasLayer/Panel/Label")
-_blackScreen = NodePath("CanvasLayer/BlackScreen")
+_dialoguePanel = NodePath("DialogUI/Panel")
+_dialogueLabel = NodePath("DialogUI/Panel/Label")
+_continueLabel = NodePath("DialogUI/Panel/ContinueLabel")
+_subjectBox = NodePath("DialogUI/Panel/SubjectBox")
+_subjectLabel = NodePath("DialogUI/Panel/SubjectBox/SubjectLabel")
+_fInstruction = NodePath("DialogUI/Panel/FInstructions")
+_blackScreen = NodePath("DialogUI/BlackScreen")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=425469525]
 script = ExtResource("1_afypq")
@@ -480,26 +486,9 @@ tile_set = SubResource("TileSet_rlm2d")
 format = 2
 layer_0/tile_data = PackedInt32Array(1572885, 1, 0, 1572897, 1, 0, 1572909, 131072, 14, 1572921, 1, 0, 1572929, 1, 0, 1507332, 0, 17, 1507335, 1179648, 9, 1572873, 1, 0, 1638399, 1, 0, 1572881, 0, 14, 1572875, 0, 14, 1572917, 262144, 11, 1572927, 262144, 11, 1572934, 524288, 11, 1507399, 0, 17, 1572911, 1, 0, 1572904, 1, 0)
 
-[node name="CanvasLayer" type="CanvasLayer" parent="." unique_id=778624493]
+[node name="DialogUI" type="CanvasLayer" parent="." unique_id=778624493]
 
-[node name="Panel" type="Panel" parent="CanvasLayer" unique_id=43786980]
-offset_top = 517.0
-offset_right = 1151.0
-offset_bottom = 648.0
-
-[node name="Label" type="Label" parent="CanvasLayer/Panel" unique_id=760640323]
-layout_mode = 0
-offset_left = 12.0
-offset_top = 11.0
-offset_right = 1138.0
-offset_bottom = 121.0
-theme_override_font_sizes/font_size = 20
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
-clip_text = true
-
-[node name="BlackScreen" type="ColorRect" parent="CanvasLayer" unique_id=1148770260]
+[node name="BlackScreen" type="ColorRect" parent="DialogUI" unique_id=1148770260]
 visible = false
 anchors_preset = 15
 anchor_right = 1.0
@@ -507,6 +496,85 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="Panel" type="NinePatchRect" parent="DialogUI" unique_id=1589630124]
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -300.0
+offset_top = -150.0
+offset_right = 300.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("24_58qxn")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+
+[node name="Label" type="Label" parent="DialogUI/Panel" unique_id=760640323]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 30.0
+offset_top = 20.0
+offset_right = 570.0
+offset_bottom = 122.0
+theme_override_colors/font_color = Color(0.2901961, 0.17254902, 0.101960786, 1)
+theme_override_font_sizes/font_size = 20
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="ContinueLabel" type="TextureRect" parent="DialogUI/Panel" unique_id=1121404391]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -41.0
+offset_top = -23.0
+offset_right = -31.0
+offset_bottom = -13.0
+texture = ExtResource("25_hsf45")
+
+[node name="FInstructions" type="Label" parent="DialogUI/Panel" unique_id=1660979402]
+layout_mode = 0
+offset_left = 543.0
+offset_top = 121.0
+offset_right = 583.0
+offset_bottom = 166.0
+theme_override_colors/font_color = Color(0.2901961, 0.17254902, 0.101960786, 1)
+theme_override_font_sizes/font_size = 20
+text = "F
+	"
+
+[node name="SubjectBox" type="NinePatchRect" parent="DialogUI/Panel" unique_id=934201819]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 30.0
+offset_top = -20.0
+offset_right = 120.0
+offset_bottom = 20.0
+texture = ExtResource("24_58qxn")
+patch_margin_left = 12
+patch_margin_top = 12
+patch_margin_right = 12
+patch_margin_bottom = 12
+
+[node name="SubjectLabel" type="Label" parent="DialogUI/Panel/SubjectBox" unique_id=1710878636]
+layout_mode = 1
+anchors_preset = -1
+offset_left = 10.0
+offset_top = 8.0
+offset_right = 80.0
+offset_bottom = 31.0
+theme_override_colors/font_color = Color(0.2901961, 0.17254902, 0.101960786, 1)
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="RemAmbForest" type="AudioStreamPlayer" parent="." unique_id=1832675087]
 stream = ExtResource("24_x0s26")

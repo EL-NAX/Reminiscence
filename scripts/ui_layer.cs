@@ -15,7 +15,7 @@ public partial class ui_layer : CanvasLayer
 		_settingsPopup.Visible = false;
 		_diaryPopup.Visible = false;
 
-		// PERBAIKAN: Ganti MenuBos menjadi MenuBoss
+		// MenuBos (satu s)
 		GetNode<BaseButton>("MenuUI/MenuBos/NewGame").Pressed += OnNewGamePressed;
 		GetNode<BaseButton>("MenuUI/MenuBos/Setting").Pressed += OnSettingPressed;
 		GetNode<BaseButton>("SettingsPopup/Panel/CloseButton").Pressed += OnCloseSettingsPressed;
@@ -26,7 +26,13 @@ public partial class ui_layer : CanvasLayer
 
 	private void OnNewGamePressed()
 	{
-		GetTree().ChangeSceneToFile("res://scenes/tutorial/tutorial.tscn");
+		if (game_state.Instance != null)
+		{
+			game_state.Instance.ResetAll();
+			GD.Print("[UiLayer] New Game - flag direset");
+		}
+
+		GetTree().ChangeSceneToFile("res://scenes/prologue/prologue.tscn");
 	}
 
 	private void OnSettingPressed()

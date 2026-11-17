@@ -1,0 +1,42 @@
+[gd_scene format=3 uid="uid://dnoafo0pf5hjr"]
+
+[ext_resource type="Script" uid="uid://bv6pe0ivgqio0" path="res://scripts/keybind_hud.cs" id="1_cfh4i"]
+
+[node name="KeybindHUD" type="CanvasLayer" unique_id=741544196]
+script = ExtResource("1_cfh4i")
+
+[node name="KeyLeftRight" type="Label" parent="." unique_id=1708707005]
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 200.0
+offset_top = -17.0
+offset_right = 277.0
+grow_vertical = 0
+text = "A/D: Gerak"
+
+[node name="KeySpace" type="Label" parent="." unique_id=1219526025]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -52.0
+offset_top = -17.0
+offset_right = 52.0
+grow_horizontal = 2
+grow_vertical = 0
+text = "Space: Loncat"
+
+[node name="KeyF" type="Label" parent="." unique_id=762964677]
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -285.0
+offset_top = -17.0
+offset_right = -200.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "F: Interaksi"

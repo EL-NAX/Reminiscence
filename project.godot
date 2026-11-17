@@ -10,10 +10,18 @@ config_version=5
 
 [application]
 
-config/name="Reminisance"
+config/name="Reminiscence"
 run/main_scene="uid://wk6s3eec7rrm"
 config/features=PackedStringArray("4.7", "C#", "Forward Plus")
 config/icon="res://icon.svg"
+
+[autoload]
+
+QuestManager="*uid://blj70hsphs521"
+GameState="*uid://4jj0pnyqw2nf"
+ScreenFade="*uid://dy4kw5ti4qp7j"
+KeybindHUD="*uid://dnoafo0pf5hjr"
+MapTitle="*uid://b3idlejmdom3j"
 
 [display]
 
@@ -22,6 +30,16 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="Reminisance"
+
+[global_group]
+
+Amari=""
+DialogUI=""
+Border=""
+
+[gui]
+
+theme/custom="uid://ciny27crjdrr4"
 
 [input]
 

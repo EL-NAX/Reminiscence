@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://dx3r0vufq1msw"]
+
+[ext_resource type="Texture2D" uid="uid://b4x8qec3ojdx0" path="res://assets/misc/map_bongkahan_ice (1).png" id="1_wp3hj"]
+
+[resource]
+atlas = ExtResource("1_wp3hj")
+region = Rect2(0, 0, 32, 32)

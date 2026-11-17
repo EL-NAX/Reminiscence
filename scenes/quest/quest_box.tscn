@@ -1,0 +1,114 @@
+[gd_scene format=3 uid="uid://bo10rgvu6mrbm"]
+
+[ext_resource type="Script" uid="uid://bcowiwbt6ob0n" path="res://scripts/quest_box.cs" id="1_ogvdv"]
+[ext_resource type="Texture2D" uid="uid://heyy5d2fxu4g" path="res://assets/ui/ui_frame.tres" id="2_03bmq"]
+[ext_resource type="Texture2D" uid="uid://073daaegm6md" path="res://assets/ui/ui_title.tres" id="2_wwl7c"]
+[ext_resource type="Texture2D" uid="uid://dxk1uda8p0yjf" path="res://assets/ui/keybind_a.tres" id="3_wwl7c"]
+[ext_resource type="Texture2D" uid="uid://dsvww6osuoodl" path="res://assets/ui/ui_frame_title.tres" id="4_bthpg"]
+
+[node name="QuestBox" type="CanvasLayer" unique_id=213035527]
+script = ExtResource("1_ogvdv")
+
+[node name="Container" type="Control" parent="." unique_id=458210063]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 30.0
+offset_bottom = 30.0
+
+[node name="Frame" type="Sprite2D" parent="Container" unique_id=758121038]
+visible = false
+position = Vector2(994.5, 322)
+scale = Vector2(3.0375, 1.9687506)
+texture = ExtResource("2_03bmq")
+
+[node name="FrameTitle" type="Sprite2D" parent="Container" unique_id=591568884]
+visible = false
+texture_filter = 1
+position = Vector2(996.25, 261)
+scale = Vector2(3.0520837, 2.2499995)
+texture = ExtResource("2_wwl7c")
+
+[node name="MainBox" type="NinePatchRect" parent="Container" unique_id=740666196]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 878.0
+offset_top = 257.0
+offset_right = 1089.0
+offset_bottom = 427.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_03bmq")
+
+[node name="TitleBox" type="NinePatchRect" parent="Container" unique_id=1924076674]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 907.0
+offset_top = 243.0
+offset_right = 1057.0
+offset_bottom = 278.0
+grow_horizontal = 2
+texture = ExtResource("4_bthpg")
+
+[node name="Quest" type="Label" parent="Container" unique_id=1794651754]
+layout_mode = 0
+offset_left = 971.0
+offset_top = 247.0
+offset_right = 1022.0
+offset_bottom = 270.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 20
+text = "Quest"
+
+[node name="TitleLabel" type="Label" parent="Container" unique_id=635194376]
+layout_mode = 0
+offset_left = 894.0
+offset_top = 311.0
+offset_right = 1102.0
+offset_bottom = 333.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+text = "Movement"
+horizontal_alignment = 1
+
+[node name="CounterLabel" type="Label" parent="Container" unique_id=1950330251]
+layout_mode = 0
+offset_left = 1056.0
+offset_top = 348.0
+offset_right = 1084.0
+offset_bottom = 370.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 15
+text = "0/1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="HintLabel" type="Label" parent="Container" unique_id=1233591239]
+layout_mode = 0
+offset_left = 915.0
+offset_top = 336.0
+offset_right = 1014.0
+offset_bottom = 381.0
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 12
+text = "Berjalan ke kiri"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
+clip_text = true
+
+[node name="KeybindHint" type="HBoxContainer" parent="Container" unique_id=1789205963]
+layout_mode = 0
+offset_left = 1012.0
+offset_top = 348.0
+offset_right = 1051.0
+offset_bottom = 371.0
+alignment = 1
+
+[node name="KeyIcon" type="TextureRect" parent="Container/KeybindHint" unique_id=921030100]
+layout_mode = 2
+texture = ExtResource("3_wwl7c")
+expand_mode = 2

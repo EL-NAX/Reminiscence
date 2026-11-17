@@ -1,0 +1,7 @@
+[gd_resource type="AtlasTexture" format=3 uid="uid://c03or08v33b8u"]
+
+[ext_resource type="Texture2D" uid="uid://bkvrwkcgu185i" path="res://assets/misc/Sign Arrow.png" id="1_lkrgh"]
+
+[resource]
+atlas = ExtResource("1_lkrgh")
+region = Rect2(504, 56, 344, 416)
