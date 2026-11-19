@@ -12,6 +12,8 @@
 [ext_resource type="Script" uid="uid://cryvgro5eo1bt" path="res://scripts/cave_path_option.cs" id="11_ne72o"]
 [ext_resource type="Script" uid="uid://pbd86tr1guck" path="res://scripts/cave_cutscene.cs" id="11_wd8fs"]
 [ext_resource type="Texture2D" uid="uid://b524ne53etoi" path="res://assets/ui/cave_hole_left.png" id="12_ne72o"]
+[ext_resource type="Resource" uid="uid://ctii0r5ppec0o" path="res://assets/audio/sfx/amari_voice.tres" id="13_v8a1m"]
+[ext_resource type="Resource" uid="uid://cuewf8m33l0qk" path="res://assets/audio/sfx/krieger_voice.tres" id="14_cjgq1"]
 [ext_resource type="PackedScene" uid="uid://cedbwmvmplhuo" path="res://scenes/amari/amari.tscn" id="18_ojfh2"]
 [ext_resource type="PackedScene" uid="uid://de4choyavvlm3" path="res://scenes/player/player.tscn" id="19_6fjli"]
 [ext_resource type="TileSet" uid="uid://j486u2a8bu11" path="res://tileset/world.tres" id="20_t02hr"]
@@ -467,7 +469,7 @@ theme_override_colors/font_color = Color(0.2901961, 0.17254902, 0.101960786, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="CaveCutscene" type="Node2D" parent="." unique_id=593971846 node_paths=PackedStringArray("_player", "_amari", "_magicLeaf", "_darkness", "_dialoguePanel", "_dialogueLabel", "_continueLabel", "_subjectBox", "_subjectLabel", "_blackScreen", "_pathSelection", "_amariCheckpoint", "_playerCheckpoint")]
+[node name="CaveCutscene" type="Node2D" parent="." unique_id=593971846 node_paths=PackedStringArray("_player", "_amari", "_magicLeaf", "_darkness", "_dialoguePanel", "_dialogueLabel", "_continueLabel", "_subjectBox", "_subjectLabel", "_blackScreen", "_pathSelection", "_amariCheckpoint", "_playerCheckpoint", "SfxTyping")]
 script = ExtResource("11_wd8fs")
 _player = NodePath("../Player")
 _amari = NodePath("../Amari")
@@ -482,6 +484,11 @@ _blackScreen = NodePath("../BlackScree/ColorRect")
 _pathSelection = NodePath("../CavePathSelection")
 _amariCheckpoint = NodePath("../AmariCheckpoint")
 _playerCheckpoint = NodePath("../PlayerCheckpoint")
+SfxTyping = NodePath("AudioStreamPlayer")
+AmariVoice = ExtResource("13_v8a1m")
+KriegerVoice = ExtResource("14_cjgq1")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="CaveCutscene" unique_id=1526178450]
 
 [node name="AmariCheckpoint" type="Marker2D" parent="." unique_id=774307970]
 position = Vector2(1112, 370)

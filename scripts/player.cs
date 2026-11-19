@@ -70,9 +70,13 @@ public partial class player : CharacterBody2D
 	private AudioStreamPlayer _sfxStepSnow;
 	private AudioStreamPlayer _sfxJump;
 	private AudioStreamPlayer _sfxLand;
+	private AudioStreamPlayer _sfxDragSword; 
 	
 	private float _stepTimer = 0f;
-	private float _stepInterval = 0.5f; // Jeda antar langkah kaki (diperlama biar gak cepet)
+	
+	// UBAH DI SINI: Tambahkan [Export] agar bisa diatur di Inspector
+	[Export] public float StepInterval = 0.5f; 
+	
 	private bool _wasOnFloor = true;
 	// ================================
 
@@ -86,6 +90,9 @@ public partial class player : CharacterBody2D
 		_sfxStepSnow = GetNodeOrNull<AudioStreamPlayer>("SFX_StepSnow");
 		_sfxJump = GetNodeOrNull<AudioStreamPlayer>("SFX_Jump");
 		_sfxLand = GetNodeOrNull<AudioStreamPlayer>("SFX_Land");
+		
+		// Ambil node audio untuk nyeret pedang
+		_sfxDragSword = GetNodeOrNull<AudioStreamPlayer>("SFX_DragSword");
 		
 		FloorStopOnSlope = true;
 		FloorMaxAngle = Mathf.DegToRad(45);
@@ -115,7 +122,7 @@ public partial class player : CharacterBody2D
 		if (IsOnFloor() && Velocity.X != 0 && !IsMovementLocked && !_autoWalking)
 		{
 			_stepTimer += (float)delta;
-			if (_stepTimer >= _stepInterval)
+			if (_stepTimer >= StepInterval) // Menggunakan variabel StepInterval
 			{
 				PlayFootstepSound();
 				_stepTimer = 0f;
@@ -123,7 +130,7 @@ public partial class player : CharacterBody2D
 		}
 		else
 		{
-			_stepTimer = _stepInterval; 
+			_stepTimer = StepInterval; 
 		}
 		
 		// Deteksi mendarat
@@ -135,10 +142,16 @@ public partial class player : CharacterBody2D
 	}
 
 	// =========================================================
-	// LOGIKA AUDIO: PAKAI CUSTOM DATA TILEMAP
+	// LOGIKA AUDIO: PAKAI CUSTOM DATA TILEMAP + NYERET PEDANG
 	// =========================================================
 	private void PlayFootstepSound()
 	{
+		// 1. Jika sedang menyeret pedang, putar suara nyeretnya
+		if (IsDraggingSword && _sfxDragSword != null)
+		{
+			_sfxDragSword.Play();
+		}
+
 		if (_groundRay == null) return;
 
 		_groundRay.ForceRaycastUpdate();

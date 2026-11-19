@@ -26,6 +26,11 @@ public partial class cave_cutscene : Node2D
 	[Export] private float _amariWalkSpeed = 70f;
 	[Export] private float _playerWalkSpeed = 70f;
 
+	// TAMBAHAN UNTUK SFX
+	[Export] public AudioStreamPlayer SfxTyping;
+	[Export] public BlipVoice AmariVoice;
+	[Export] public BlipVoice KriegerVoice;
+
 	private Vector2 _originalZoom;
 	private Tween _blinkTween;
 
@@ -64,14 +69,11 @@ public partial class cave_cutscene : Node2D
 
 	public override async void _Ready()
 	{
-	// =======================================================
-	// MUNCULIN JUDUL MAP DI SINI
-	// =======================================================
-	var mapTitle = GetNodeOrNull<map_title>("/root/MapTitle");
-	if (mapTitle != null)
-	{
-		mapTitle.ShowTitle("Cave"); // <-- Ganti teksnya
-	}
+		var mapTitle = GetNodeOrNull<map_title>("/root/MapTitle");
+		if (mapTitle != null)
+		{
+			mapTitle.ShowTitle("Cave");
+		}
 
 		GD.Print("=== [CaveCutscene] _Ready() START ===");
 
@@ -194,6 +196,9 @@ public partial class cave_cutscene : Node2D
 		_dialoguePanel.Show();
 		StopBlinking();
 
+		// ==========================================
+		// DIALOG PART 1
+		// ==========================================
 		for (int i = 0; i < _dialoguesPart1.Length; i++)
 		{
 			string speaker = "";
@@ -209,6 +214,14 @@ public partial class cave_cutscene : Node2D
 			if (_subjectLabel != null) _subjectLabel.Text = speaker;
 			if (_subjectBox != null) _subjectBox.Visible = !string.IsNullOrEmpty(speaker);
 
+			BlipVoice currentVoice = AmariVoice;
+			if (!string.IsNullOrEmpty(speaker))
+			{
+				string speakerLower = speaker.ToLower();
+				if (speakerLower.Contains("amari")) currentVoice = AmariVoice;
+				else if (speakerLower.Contains("krieger")) currentVoice = KriegerVoice;
+			}
+
 			_dialogueLabel.Text = text;
 			_dialogueLabel.VisibleRatio = 0.0f;
 
@@ -220,15 +233,47 @@ public partial class cave_cutscene : Node2D
 			textTween.TweenProperty(_dialogueLabel, "visible_ratio", 1.0f, duration);
 
 			bool isTyping = true;
+			float sfxTimer = 0f;
+			int lastBlipIndex = 0;
 			
 			textTween.Finished += () => 
 			{
 				isTyping = false;
 				StartBlinking();
+				if (SfxTyping != null) SfxTyping.Stop();
 			};
 
 			while (true)
 			{
+				if (isTyping && SfxTyping != null && currentVoice != null)
+				{
+					float visibleRatio = _dialogueLabel.VisibleRatio;
+					int currentVisibleChars = (int)(visibleRatio * text.Length);
+
+					if (currentVisibleChars > lastBlipIndex)
+					{
+						lastBlipIndex = currentVisibleChars;
+						sfxTimer += (float)GetProcessDeltaTime();
+
+						if (sfxTimer >= 0.06f) 
+						{
+							string lastLetter = text.Substring(currentVisibleChars - 1, 1);
+							if (lastLetter != " " && lastLetter != "\n") 
+							{
+								var blipData = currentVoice.Pick(lastLetter);
+								if (blipData.stream != null)
+								{
+									SfxTyping.Stream = blipData.stream;
+									SfxTyping.PitchScale = blipData.pitchScale;
+									SfxTyping.VolumeDb = currentVoice.VolumeDb;
+									SfxTyping.Play();
+								}
+							}
+							sfxTimer = 0f;
+						}
+					}
+				}
+
 				if (Input.IsActionJustPressed("ui_accept") || 
 					Input.IsActionJustPressed("jump") || 
 					Input.IsActionJustPressed("interact"))
@@ -239,6 +284,7 @@ public partial class cave_cutscene : Node2D
 						_dialogueLabel.VisibleRatio = 1.0f;
 						isTyping = false;
 						StartBlinking();
+						if (SfxTyping != null) SfxTyping.Stop();
 						await ToSignal(GetTree().CreateTimer(0.15f), SceneTreeTimer.SignalName.Timeout);
 					}
 					else 
@@ -249,6 +295,7 @@ public partial class cave_cutscene : Node2D
 				}
 				await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 			}
+			if (SfxTyping != null) SfxTyping.Stop();
 			await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
 		}
 		
@@ -291,6 +338,9 @@ public partial class cave_cutscene : Node2D
 		_dialoguePanel.Show();
 		StopBlinking();
 
+		// ==========================================
+		// DIALOG PART 2
+		// ==========================================
 		for (int i = 0; i < _dialoguesPart2.Length; i++)
 		{
 			string speaker = "";
@@ -306,6 +356,14 @@ public partial class cave_cutscene : Node2D
 			if (_subjectLabel != null) _subjectLabel.Text = speaker;
 			if (_subjectBox != null) _subjectBox.Visible = !string.IsNullOrEmpty(speaker);
 
+			BlipVoice currentVoice = AmariVoice;
+			if (!string.IsNullOrEmpty(speaker))
+			{
+				string speakerLower = speaker.ToLower();
+				if (speakerLower.Contains("amari")) currentVoice = AmariVoice;
+				else if (speakerLower.Contains("krieger")) currentVoice = KriegerVoice;
+			}
+
 			_dialogueLabel.Text = text;
 			_dialogueLabel.VisibleRatio = 0.0f;
 
@@ -317,15 +375,47 @@ public partial class cave_cutscene : Node2D
 			textTween.TweenProperty(_dialogueLabel, "visible_ratio", 1.0f, duration);
 
 			bool isTyping = true;
+			float sfxTimer = 0f;
+			int lastBlipIndex = 0;
 			
 			textTween.Finished += () => 
 			{
 				isTyping = false;
 				StartBlinking();
+				if (SfxTyping != null) SfxTyping.Stop();
 			};
 
 			while (true)
 			{
+				if (isTyping && SfxTyping != null && currentVoice != null)
+				{
+					float visibleRatio = _dialogueLabel.VisibleRatio;
+					int currentVisibleChars = (int)(visibleRatio * text.Length);
+
+					if (currentVisibleChars > lastBlipIndex)
+					{
+						lastBlipIndex = currentVisibleChars;
+						sfxTimer += (float)GetProcessDeltaTime();
+
+						if (sfxTimer >= 0.06f) 
+						{
+							string lastLetter = text.Substring(currentVisibleChars - 1, 1);
+							if (lastLetter != " " && lastLetter != "\n") 
+							{
+								var blipData = currentVoice.Pick(lastLetter);
+								if (blipData.stream != null)
+								{
+									SfxTyping.Stream = blipData.stream;
+									SfxTyping.PitchScale = blipData.pitchScale;
+									SfxTyping.VolumeDb = currentVoice.VolumeDb;
+									SfxTyping.Play();
+								}
+							}
+							sfxTimer = 0f;
+						}
+					}
+				}
+
 				if (Input.IsActionJustPressed("ui_accept") || 
 					Input.IsActionJustPressed("jump") || 
 					Input.IsActionJustPressed("interact"))
@@ -336,6 +426,7 @@ public partial class cave_cutscene : Node2D
 						_dialogueLabel.VisibleRatio = 1.0f;
 						isTyping = false;
 						StartBlinking();
+						if (SfxTyping != null) SfxTyping.Stop();
 						await ToSignal(GetTree().CreateTimer(0.15f), SceneTreeTimer.SignalName.Timeout);
 					}
 					else 
@@ -346,6 +437,7 @@ public partial class cave_cutscene : Node2D
 				}
 				await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 			}
+			if (SfxTyping != null) SfxTyping.Stop();
 			await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
 		}
 		_dialoguePanel.Hide();
@@ -361,9 +453,6 @@ public partial class cave_cutscene : Node2D
 		
 		_amari.IsInCutscene = false; 
 
-		// ========================================================
-		// TAMBAHKAN INI: BUKA KUNCI PLAYER SEBELUM AUTOWALK
-		// ========================================================
 		if (_player != null) 
 			_player.IsMovementLocked = false; 
 
@@ -373,7 +462,6 @@ public partial class cave_cutscene : Node2D
 		while (!_amari.IsWalkingDone || !_player.IsAutoWalking)
 			await ToSignal(GetTree(), SceneTree.SignalName.PhysicsFrame);
 
-		// Setelah selesai, kunci lagi
 		if (_player != null) 
 			_player.IsMovementLocked = true;
 

@@ -1,0 +1,10 @@
+[gd_resource type="Resource" script_class="BlipVoice" format=3 uid="uid://ctii0r5ppec0o"]
+
+[ext_resource type="AudioStream" uid="uid://b8hx6ciolqlet" path="res://assets/audio/sfx/typewriter_5.wav" id="1_i7apr"]
+[ext_resource type="Script" uid="uid://cubw300q87ckm" path="res://scripts/BlipVoice.cs" id="1_rn6po"]
+
+[resource]
+script = ExtResource("1_rn6po")
+Sounds = Array[AudioStream]([ExtResource("1_i7apr")])
+Every = 1
+metadata/_custom_type_script = "uid://cubw300q87ckm"

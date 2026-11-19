@@ -3,8 +3,10 @@
 [ext_resource type="Script" uid="uid://b5figijt4mw7d" path="res://scripts/parallax_background.cs" id="1_afypq"]
 [ext_resource type="Script" uid="uid://dpq4ry5jw81ms" path="res://scripts/prologue.cs" id="1_f822g"]
 [ext_resource type="PackedScene" uid="uid://de4choyavvlm3" path="res://scenes/player/player.tscn" id="2_4nriy"]
+[ext_resource type="Resource" uid="uid://ctii0r5ppec0o" path="res://assets/audio/sfx/amari_voice.tres" id="2_erhkx"]
 [ext_resource type="Texture2D" uid="uid://10rfb4ui6xi4" path="res://assets/background/background_sky.jpg" id="2_fkfu4"]
 [ext_resource type="PackedScene" uid="uid://cedbwmvmplhuo" path="res://scenes/amari/amari.tscn" id="3_hsofu"]
+[ext_resource type="Resource" uid="uid://cuewf8m33l0qk" path="res://assets/audio/sfx/krieger_voice.tres" id="3_knqle"]
 [ext_resource type="Texture2D" uid="uid://b5g263b72locw" path="res://assets/cloud/cloud1.png" id="3_owg8l"]
 [ext_resource type="TileSet" uid="uid://j486u2a8bu11" path="res://tileset/world.tres" id="4_0wrku"]
 [ext_resource type="Texture2D" uid="uid://eua4kijd5iur" path="res://assets/cloud/cloud2.png" id="4_3dmxa"]
@@ -283,7 +285,7 @@ custom_data_layer_1/type = 4
 sources/0 = SubResource("TileSetAtlasSource_x7a1n")
 sources/1 = SubResource("TileSetAtlasSource_4nriy")
 
-[node name="prologue" type="Node2D" unique_id=807261446 node_paths=PackedStringArray("_player", "_amari", "_dialoguePanel", "_dialogueLabel", "_continueLabel", "_subjectBox", "_subjectLabel", "_fInstruction", "_blackScreen")]
+[node name="prologue" type="Node2D" unique_id=807261446 node_paths=PackedStringArray("_player", "_amari", "_dialoguePanel", "_dialogueLabel", "_continueLabel", "_subjectBox", "_subjectLabel", "_fInstruction", "_blackScreen", "SfxTyping", "_markerUjungKanan")]
 script = ExtResource("1_f822g")
 _player = NodePath("Player")
 _amari = NodePath("Amari")
@@ -294,6 +296,11 @@ _subjectBox = NodePath("DialogUI/Panel/SubjectBox")
 _subjectLabel = NodePath("DialogUI/Panel/SubjectBox/SubjectLabel")
 _fInstruction = NodePath("DialogUI/Panel/FInstructions")
 _blackScreen = NodePath("DialogUI/BlackScreen")
+SfxTyping = NodePath("AudioStreamPlayer")
+AmariVoice = ExtResource("2_erhkx")
+KriegerVoice = ExtResource("3_knqle")
+AttackDelay = 1.0
+_markerUjungKanan = NodePath("MarkerUjung")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="." unique_id=425469525]
 script = ExtResource("1_afypq")
@@ -579,3 +586,8 @@ vertical_alignment = 1
 [node name="RemAmbForest" type="AudioStreamPlayer" parent="." unique_id=1832675087]
 stream = ExtResource("24_x0s26")
 autoplay = true
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=1386294510]
+
+[node name="MarkerUjung" type="Marker2D" parent="." unique_id=1125114075]
+position = Vector2(1003, 357)

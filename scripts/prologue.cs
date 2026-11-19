@@ -19,6 +19,20 @@ public partial class prologue : Node2D
 
 	[Export] private string _tutorialScenePath = "res://scenes/tutorial/tutorial.tscn";
 
+	// TAMBAHAN UNTUK SFX
+	[Export] public AudioStreamPlayer SfxTyping;
+	[Export] public BlipVoice AmariVoice;
+	[Export] public BlipVoice KriegerVoice;
+
+	// TAMBAHAN UNTUK LOOP ATTACK
+	[Export] public float AttackDelay = 1.5f; // Jeda antar serangan
+	private bool _isAttackingLoop = false; // Flag untuk menghentikan loop
+
+	// TAMBAHAN UNTUK JALAN KE UJUNG MAP
+	[Export] private Marker2D _markerUjungKanan;   // opsional: tujuan jalan (kalau kosong pakai LimitRight kamera)
+	[Export] public float WalkSpeed = 100f;        // kecepatan jalan
+	[Export] public float JarakCadangan = 800f;    // dipakai kalau marker & LimitRight tidak ada
+
 	private Tween _blinkTween;
 
 	private readonly string[] _dialogues = new string[]
@@ -38,12 +52,10 @@ public partial class prologue : Node2D
 		"Amari: Nah, begitu dong! Ayo cepat sebelum harinya makin gelap!"
 	};
 
-	// Fungsi baru untuk berkedip
 	private void StartBlinking()
 	{
 		if (_continueLabel == null) return;
 		
-		// Munculin panah & F
 		_continueLabel.Visible = true;
 		_continueLabel.Modulate = new Color(1, 1, 1, 1);
 		if (_fInstruction != null) 
@@ -56,13 +68,10 @@ public partial class prologue : Node2D
 		_blinkTween = CreateTween();
 		_blinkTween.SetLoops(); 
 		
-		// Kedipin panah
 		_blinkTween.TweenProperty(_continueLabel, "modulate:a", 0.2f, 0.5f);
-		// Kedipin F barengan (paralel)
 		if (_fInstruction != null)
 			_blinkTween.Parallel().TweenProperty(_fInstruction, "modulate:a", 0.2f, 0.5f);
 			
-		// Balikin ke terang
 		_blinkTween.TweenProperty(_continueLabel, "modulate:a", 1.0f, 0.5f);
 		if (_fInstruction != null)
 			_blinkTween.Parallel().TweenProperty(_fInstruction, "modulate:a", 1.0f, 0.5f);
@@ -109,14 +118,19 @@ public partial class prologue : Node2D
 		var playerSprite = _player?.GetNodeOrNull<AnimatedSprite2D>("AnimatedSprite2D") 
 						   ?? _player?.GetNodeOrNull<AnimatedSprite2D>("Sprite2D");
 
+		// ========================================================
+		// LOGIKA ATTACK DENGAN JEDA (TIDAK LOOPING TERUS-MENERUS)
+		// ========================================================
 		if (playerSprite != null)
 		{
 			playerSprite.FlipH = true;
 			if (playerSprite.SpriteFrames != null && playerSprite.SpriteFrames.HasAnimation("attack"))
 			{
-				playerSprite.Play("attack");
+				_isAttackingLoop = true;
+				_ = LoopAttackAnimation(playerSprite);
 			}
 		}
+		// ========================================================
 
 		Tween fadeInTween = CreateTween();
 		fadeInTween.TweenProperty(_blackScreen, "color:a", 0.0f, 1.0f)
@@ -126,6 +140,41 @@ public partial class prologue : Node2D
 		await ToSignal(fadeInTween, Tween.SignalName.Finished);
 
 		await RunPrologueSequence();
+	}
+
+	// Attack sekali -> jeda (idle) -> attack lagi
+	private async Task LoopAttackAnimation(AnimatedSprite2D sprite)
+	{
+		// Pastikan animasi attack TIDAK looping bawaan dari SpriteFrames
+		sprite.SpriteFrames.SetAnimationLoop("attack", false);
+		bool punyaIdle = sprite.SpriteFrames.HasAnimation("idle");
+
+		while (_isAttackingLoop)
+		{
+			// 1. Mainkan attack satu kali
+			sprite.Play("attack");
+
+			// 2. Tunggu sampai animasi benar-benar selesai
+			float speed = (float)sprite.SpriteFrames.GetAnimationSpeed("attack");
+			int frames = sprite.SpriteFrames.GetFrameCount("attack");
+			float animDuration = frames / (speed * sprite.SpeedScale);
+			await ToSignal(GetTree().CreateTimer(animDuration + 0.05f), SceneTreeTimer.SignalName.Timeout);
+
+			if (!_isAttackingLoop) break;
+
+			// 3. Masa jeda: balik ke idle (atau diam di frame pertama)
+			if (punyaIdle)
+			{
+				sprite.Play("idle");
+			}
+			else
+			{
+				sprite.Stop();
+				sprite.Frame = 0;
+			}
+
+			await ToSignal(GetTree().CreateTimer(AttackDelay), SceneTreeTimer.SignalName.Timeout);
+		}
 	}
 
 	private async Task RunPrologueSequence()
@@ -164,6 +213,9 @@ public partial class prologue : Node2D
 		}
 
 		await ToSignal(GetTree().CreateTimer(0.3f), SceneTreeTimer.SignalName.Timeout);
+
+		// Hentikan loop attack sebelum player idle
+		_isAttackingLoop = false;
 
 		if (playerSprite != null)
 		{
@@ -206,6 +258,14 @@ public partial class prologue : Node2D
 			if (_subjectLabel != null) _subjectLabel.Text = speaker;
 			if (_subjectBox != null) _subjectBox.Visible = !string.IsNullOrEmpty(speaker);
 
+			BlipVoice currentVoice = AmariVoice;
+			if (!string.IsNullOrEmpty(speaker))
+			{
+				string speakerLower = speaker.ToLower();
+				if (speakerLower.Contains("amari")) currentVoice = AmariVoice;
+				else if (speakerLower.Contains("krieger")) currentVoice = KriegerVoice;
+			}
+
 			_dialogueLabel.Text = text;
 			_dialogueLabel.VisibleRatio = 0.0f; 
 
@@ -217,15 +277,47 @@ public partial class prologue : Node2D
 			textTween.TweenProperty(_dialogueLabel, "visible_ratio", 1.0f, duration);
 
 			bool isTyping = true;
+			float sfxTimer = 0f;
+			int lastBlipIndex = 0;
 			
 			textTween.Finished += () => 
 			{
 				isTyping = false;
 				StartBlinking();
+				if (SfxTyping != null) SfxTyping.Stop();
 			};
 
 			while (true)
 			{
+				if (isTyping && SfxTyping != null && currentVoice != null)
+				{
+					float visibleRatio = _dialogueLabel.VisibleRatio;
+					int currentVisibleChars = (int)(visibleRatio * text.Length);
+
+					if (currentVisibleChars > lastBlipIndex)
+					{
+						lastBlipIndex = currentVisibleChars;
+						sfxTimer += (float)GetProcessDeltaTime();
+
+						if (sfxTimer >= 0.06f) 
+						{
+							string lastLetter = text.Substring(currentVisibleChars - 1, 1);
+							if (lastLetter != " " && lastLetter != "\n") 
+							{
+								var blipData = currentVoice.Pick(lastLetter);
+								if (blipData.stream != null)
+								{
+									SfxTyping.Stream = blipData.stream;
+									SfxTyping.PitchScale = blipData.pitchScale;
+									SfxTyping.VolumeDb = currentVoice.VolumeDb;
+									SfxTyping.Play();
+								}
+							}
+							sfxTimer = 0f;
+						}
+					}
+				}
+
 				if (Input.IsActionJustPressed("ui_accept") || 
 					Input.IsActionJustPressed("jump") || 
 					Input.IsActionJustPressed("interact"))
@@ -236,6 +328,9 @@ public partial class prologue : Node2D
 						_dialogueLabel.VisibleRatio = 1.0f;
 						isTyping = false;
 						StartBlinking();
+						
+						if (SfxTyping != null) SfxTyping.Stop(); 
+						
 						await ToSignal(GetTree().CreateTimer(0.15f), SceneTreeTimer.SignalName.Timeout);
 					}
 					else
@@ -247,6 +342,7 @@ public partial class prologue : Node2D
 				await ToSignal(GetTree(), SceneTree.SignalName.ProcessFrame);
 			}
 
+			if (SfxTyping != null) SfxTyping.Stop(); 
 			await ToSignal(GetTree().CreateTimer(0.1f), SceneTreeTimer.SignalName.Timeout);
 		}
 
@@ -263,6 +359,9 @@ public partial class prologue : Node2D
 			await ToSignal(zoomOut, Tween.SignalName.Finished);
 		}
 
+		// ===== AMARI & KRIEGER JALAN BARENGAN KE UJUNG MAP KANAN =====
+		await JalanKeUjungKanan(playerSprite, amariSprite, camera);
+
 		Tween fadeOutTween = CreateTween();
 		fadeOutTween.TweenProperty(_blackScreen, "color:a", 1.0f, 0.8f)
 					.SetTrans(Tween.TransitionType.Cubic)
@@ -271,5 +370,47 @@ public partial class prologue : Node2D
 		await ToSignal(fadeOutTween, Tween.SignalName.Finished);
 
 		GetTree().ChangeSceneToFile(_tutorialScenePath);
+	}
+
+	private async Task JalanKeUjungKanan(AnimatedSprite2D playerSprite, AnimatedSprite2D amariSprite, Camera2D camera)
+	{
+		if (_player == null || _amari == null) return;
+
+		// Tentukan X tujuan untuk Krieger
+		float targetX;
+		if (_markerUjungKanan != null)
+			targetX = _markerUjungKanan.GlobalPosition.X;
+		else if (camera != null && camera.LimitRight < 10000000)
+			targetX = camera.LimitRight - 60f; // sedikit sebelum batas kanan
+		else
+			targetX = _player.GlobalPosition.X + JarakCadangan;
+
+		// Jarak yang sama dipakai keduanya supaya jarak antar mereka tetap
+		float jarak = targetX - _player.GlobalPosition.X;
+		if (jarak <= 0f) return;
+
+		float durasi = jarak / WalkSpeed;
+
+		// Hadap kanan + animasi jalan
+		if (playerSprite != null)
+		{
+			playerSprite.FlipH = false;
+			if (playerSprite.SpriteFrames != null && playerSprite.SpriteFrames.HasAnimation("walk"))
+				playerSprite.Play("walk");
+		}
+		if (amariSprite != null)
+		{
+			amariSprite.FlipH = false;
+			if (amariSprite.SpriteFrames != null && amariSprite.SpriteFrames.HasAnimation("walkWithKeranjang"))
+				amariSprite.Play("walkWithKeranjang");
+		}
+
+		var tween = CreateTween().SetParallel(true);
+		tween.TweenProperty(_player, "global_position:x", _player.GlobalPosition.X + jarak, durasi)
+			 .SetTrans(Tween.TransitionType.Linear);
+		tween.TweenProperty(_amari, "global_position:x", _amari.GlobalPosition.X + jarak, durasi)
+			 .SetTrans(Tween.TransitionType.Linear);
+
+		await ToSignal(tween, Tween.SignalName.Finished);
 	}
 }

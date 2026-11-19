@@ -6,10 +6,14 @@ public partial class sword_qte : CanvasLayer
 	[Signal] public delegate void QTEProgressEventHandler(float progress);
 
 	// BALIK KE SETELAN AWAL (LEBIH SULIT)
-	[Export] public float BaseDecayRate = 10f;     // Turun lebih cepet
-	[Export] public float DifficultyScale = 30f;  // Makin tinggi makin susah banget
-	[Export] public float GainPerClick = 6f;      // Sekali spam cuma nambah dikit
-	[Export] public float Duration = 15f;         // Waktu lebih mepet
+	[Export] public float BaseDecayRate = 10f;     
+	[Export] public float DifficultyScale = 30f;  
+	[Export] public float GainPerClick = 6f;      
+	[Export] public float Duration = 15f;         
+
+	// TAMBAHAN AUDIO
+	[Export] public AudioStreamPlayer SfxSpam;
+	[Export] public AudioStreamPlayer SfxUnsheathe;
 
 	private Control _root;
 	private ProgressBar _progressBar;
@@ -31,7 +35,6 @@ public partial class sword_qte : CanvasLayer
 		_root.Visible = false;
 		ProcessMode = ProcessModeEnum.Always;
 		
-		// Sembunyikan label dari awal
 		if (_hintLabel != null) _hintLabel.Visible = false; 
 	}
 
@@ -43,7 +46,6 @@ public partial class sword_qte : CanvasLayer
 		_root.Visible = true;
 		_progressBar.Value = 0;
 		
-		// Pastikan label tetap sembunyi
 		if (_hintLabel != null) _hintLabel.Visible = false;
 		
 		if (_spaceIndicator != null) 
@@ -60,6 +62,18 @@ public partial class sword_qte : CanvasLayer
 		if (Input.IsActionJustPressed("jump") || Input.IsActionJustPressed("ui_accept"))
 		{
 			_progress += GainPerClick;
+
+			// Mainkan SFX saat spam
+			if (SfxSpam != null)
+			{
+				// Hanya putar suara jika suara sebelumnya sudah selesai.
+				// Ini mencegah suara terpotong/aneh saat di-spam cepat.
+				if (!SfxSpam.Playing) 
+				{
+					SfxSpam.PitchScale = (float)GD.RandRange(0.95, 1.05);
+					SfxSpam.Play();
+				}
+			}
 		}
 	}
 
@@ -81,6 +95,10 @@ public partial class sword_qte : CanvasLayer
 			_isActive = false;
 			_root.Visible = false;
 			if (_spaceIndicator != null) _spaceIndicator.Visible = false;
+			
+			// Mainkan SFX saat pedang berhasil ditarik
+			if (SfxUnsheathe != null) SfxUnsheathe.Play();
+
 			EmitSignal(SignalName.QTEFinished, true);
 			return;
 		}

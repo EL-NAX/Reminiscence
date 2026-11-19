@@ -9,8 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://bcsthr5yqpqut" path="res://scenes/items/interactable_item.tscn" id="7_pljsg"]
 [ext_resource type="Texture2D" uid="uid://dx3r0vufq1msw" path="res://assets/misc/ice.tres" id="8_wijgv"]
 [ext_resource type="Texture2D" uid="uid://dmt22wuyu1jkl" path="res://assets/ui/panel.png" id="13_wijgv"]
+[ext_resource type="Resource" uid="uid://ctii0r5ppec0o" path="res://assets/audio/sfx/amari_voice.tres" id="14_64orx"]
 [ext_resource type="Texture2D" uid="uid://ch244od2kwirm" path="res://assets/ui/next.png" id="14_5818a"]
 [ext_resource type="PackedScene" uid="uid://cj74lnu6alksx" path="res://scenes/sword_qte/sword_qte.tscn" id="15_1aq3y"]
+[ext_resource type="Resource" uid="uid://cuewf8m33l0qk" path="res://assets/audio/sfx/krieger_voice.tres" id="15_2q0ll"]
 [ext_resource type="Script" uid="uid://d0n5wbp1f8v1c" path="res://scripts/ice_cave_2_controller.cs" id="15_pljsg"]
 [ext_resource type="AudioStream" uid="uid://w6hv8gkedgef" path="res://assets/audio/sfx/sfx_fall_03.wav" id="17_1aq3y"]
 [ext_resource type="PackedScene" uid="uid://cedbwmvmplhuo" path="res://scenes/amari/amari.tscn" id="17_lxtg6"]
@@ -19,6 +21,8 @@
 [ext_resource type="AudioStream" uid="uid://bpl5glnxir1u1" path="res://assets/audio/bgm/rem_amb_ice_cave.ogg" id="19_jbhig"]
 [ext_resource type="Texture2D" uid="uid://c03or08v33b8u" path="res://assets/misc/sign_attow_right.tres" id="20_2uauv"]
 [ext_resource type="Script" uid="uid://c6edowjfokuop" path="res://scripts/dialogue_controller.cs" id="20_d6xcq"]
+[ext_resource type="AudioStream" uid="uid://5jrxgacfbgby" path="res://assets/audio/sfx/ice_crack_01.wav" id="20_jh7wd"]
+[ext_resource type="AudioStream" uid="uid://cuyff7hl8enne" path="res://assets/audio/sfx/sfx_narikPedang_01.wav" id="21_rk2ex"]
 [ext_resource type="PackedScene" uid="uid://bo10rgvu6mrbm" path="res://scenes/quest/quest_box.tscn" id="22_qyhi1"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4n7fu"]
@@ -144,8 +148,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="DialogUI" type="CanvasLayer" parent="." unique_id=637121567 groups=["DialogUI"]]
+[node name="DialogUI" type="CanvasLayer" parent="." unique_id=637121567 node_paths=PackedStringArray("SfxTyping") groups=["DialogUI"]]
 script = ExtResource("20_d6xcq")
+SfxTyping = NodePath("AudioStreamPlayer")
+AmariVoice = ExtResource("14_64orx")
+KriegerVoice = ExtResource("15_2q0ll")
 
 [node name="Panel" type="NinePatchRect" parent="DialogUI" unique_id=549674316]
 anchors_preset = -1
@@ -212,10 +219,20 @@ theme_override_colors/font_color = Color(0.2901961, 0.17254902, 0.101960786, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DialogUI" unique_id=182322687]
+
 [node name="QuestBox" parent="." unique_id=213035527 instance=ExtResource("22_qyhi1")]
 visible = false
 
-[node name="sword_qte" parent="." unique_id=1494264728 instance=ExtResource("15_1aq3y")]
+[node name="sword_qte" parent="." unique_id=1494264728 node_paths=PackedStringArray("SfxSpam", "SfxUnsheathe") instance=ExtResource("15_1aq3y")]
+SfxSpam = NodePath("SFX_Spam")
+SfxUnsheathe = NodePath("SFX_Unseathe")
+
+[node name="SFX_Spam" type="AudioStreamPlayer" parent="sword_qte" unique_id=755236196]
+stream = ExtResource("20_jh7wd")
+
+[node name="SFX_Unseathe" type="AudioStreamPlayer" parent="sword_qte" unique_id=220902248]
+stream = ExtResource("21_rk2ex")
 
 [node name="IceCave2Controller" type="Node" parent="." unique_id=2050724059 node_paths=PackedStringArray("SFXGedubrak")]
 script = ExtResource("15_pljsg")

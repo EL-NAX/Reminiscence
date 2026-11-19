@@ -30,6 +30,9 @@
 [ext_resource type="PackedScene" uid="uid://bo10rgvu6mrbm" path="res://scenes/quest/quest_box.tscn" id="22_vsafp"]
 [ext_resource type="Texture2D" uid="uid://ch244od2kwirm" path="res://assets/ui/next.png" id="22_wjvul"]
 [ext_resource type="Script" uid="uid://2jrjyut7vci4" path="res://scripts/exit_trigger.cs" id="25_wjvul"]
+[ext_resource type="Resource" uid="uid://ctii0r5ppec0o" path="res://assets/audio/sfx/amari_voice.tres" id="26_fwdjb"]
+[ext_resource type="Resource" uid="uid://cuewf8m33l0qk" path="res://assets/audio/sfx/krieger_voice.tres" id="27_papdy"]
+[ext_resource type="AudioStream" uid="uid://b4nbt0hlpxxdr" path="res://assets/audio/sfx/typewriter_1.wav" id="30_papdy"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4n7fu"]
 size = Vector2(35, 663)
@@ -275,9 +278,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="DialogUI" type="CanvasLayer" parent="." unique_id=637121567 groups=["DialogUI"]]
+[node name="DialogUI" type="CanvasLayer" parent="." unique_id=637121567 node_paths=PackedStringArray("SfxTyping") groups=["DialogUI"]]
 script = ExtResource("20_xnr5r")
-AutoAdvance = true
+SfxTyping = NodePath("AudioStreamPlayer")
+AmariVoice = ExtResource("26_fwdjb")
+KriegerVoice = ExtResource("27_papdy")
 
 [node name="Panel" type="NinePatchRect" parent="DialogUI" unique_id=1987275273]
 anchors_preset = -1
@@ -346,6 +351,9 @@ offset_bottom = 31.0
 theme_override_colors/font_color = Color(0.2901961, 0.17254902, 0.101960786, 1)
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="DialogUI" unique_id=374642823]
+stream = ExtResource("30_papdy")
 
 [node name="IceCave1Controller" type="Node" parent="." unique_id=1875921028 node_paths=PackedStringArray("PlayerExitMarker", "AmariExitMarker")]
 script = ExtResource("21_5iewk")
